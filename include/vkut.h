@@ -15,8 +15,8 @@
 
 //-----------------------------------------------------------------------------
 
-struct VkutApplicationInfo : VkApplicationInfo {
-    VkutApplicationInfo() {
+struct VuApplicationInfo : VkApplicationInfo {
+    VuApplicationInfo() {
         sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         pNext = nullptr;
         pApplicationName = nullptr;
@@ -39,8 +39,8 @@ struct VkutApplicationInfo : VkApplicationInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutInstanceCreateInfo : VkInstanceCreateInfo {
-    VkutInstanceCreateInfo() {
+struct VuInstanceCreateInfo : VkInstanceCreateInfo {
+    VuInstanceCreateInfo() {
         sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -86,8 +86,8 @@ struct VkutInstanceCreateInfo : VkInstanceCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutExtent3D : VkExtent3D {
-    VkutExtent3D() {
+struct VuExtent3D : VkExtent3D {
+    VuExtent3D() {
         width = 0;
         height = 0;
         depth = 0;
@@ -96,8 +96,8 @@ struct VkutExtent3D : VkExtent3D {
 
 //-----------------------------------------------------------------------------
 
-struct VkutDeviceQueueCreateInfo : VkDeviceQueueCreateInfo {
-    VkutDeviceQueueCreateInfo() {
+struct VuDeviceQueueCreateInfo : VkDeviceQueueCreateInfo {
+    VuDeviceQueueCreateInfo() {
         sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -109,8 +109,8 @@ struct VkutDeviceQueueCreateInfo : VkDeviceQueueCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutDeviceCreateInfo : VkDeviceCreateInfo {
-    VkutDeviceCreateInfo() {
+struct VuDeviceCreateInfo : VkDeviceCreateInfo {
+    VuDeviceCreateInfo() {
         sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -126,8 +126,8 @@ struct VkutDeviceCreateInfo : VkDeviceCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutSubmitInfo : VkSubmitInfo {
-    VkutSubmitInfo() {
+struct VuSubmitInfo : VkSubmitInfo {
+    VuSubmitInfo() {
         sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
         pNext = nullptr;
         waitSemaphoreCount = 0;
@@ -142,8 +142,8 @@ struct VkutSubmitInfo : VkSubmitInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutMemoryAllocateInfo : VkMemoryAllocateInfo {
-    VkutMemoryAllocateInfo() {
+struct VuMemoryAllocateInfo : VkMemoryAllocateInfo {
+    VuMemoryAllocateInfo() {
         sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         pNext = nullptr;
         allocationSize = 0;
@@ -153,8 +153,8 @@ struct VkutMemoryAllocateInfo : VkMemoryAllocateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutMappedMemoryRange : VkMappedMemoryRange {
-    VkutMappedMemoryRange() {
+struct VuMappedMemoryRange : VkMappedMemoryRange {
+    VuMappedMemoryRange() {
         sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
         pNext = nullptr;
         memory = VK_NULL_HANDLE;
@@ -165,8 +165,8 @@ struct VkutMappedMemoryRange : VkMappedMemoryRange {
 
 //-----------------------------------------------------------------------------
 
-struct VkutBindSparseInfo : VkBindSparseInfo {
-    VkutBindSparseInfo() {
+struct VuBindSparseInfo : VkBindSparseInfo {
+    VuBindSparseInfo() {
         sType = VK_STRUCTURE_TYPE_BIND_SPARSE_INFO;
         pNext = nullptr;
         waitSemaphoreCount = 0;
@@ -184,8 +184,8 @@ struct VkutBindSparseInfo : VkBindSparseInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutFenceCreateInfo : VkFenceCreateInfo {
-    VkutFenceCreateInfo() {
+struct VuFenceCreateInfo : VkFenceCreateInfo {
+    VuFenceCreateInfo() {
         sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -194,8 +194,8 @@ struct VkutFenceCreateInfo : VkFenceCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutSemaphoreCreateInfo : VkSemaphoreCreateInfo {
-    VkutSemaphoreCreateInfo() {
+struct VuSemaphoreCreateInfo : VkSemaphoreCreateInfo {
+    VuSemaphoreCreateInfo() {
         sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -204,8 +204,8 @@ struct VkutSemaphoreCreateInfo : VkSemaphoreCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutEventCreateInfo : VkEventCreateInfo {
-    VkutEventCreateInfo() {
+struct VuEventCreateInfo : VkEventCreateInfo {
+    VuEventCreateInfo() {
         sType = VK_STRUCTURE_TYPE_EVENT_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -214,8 +214,8 @@ struct VkutEventCreateInfo : VkEventCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutQueryPoolCreateInfo : VkQueryPoolCreateInfo {
-    VkutQueryPoolCreateInfo() {
+struct VuQueryPoolCreateInfo : VkQueryPoolCreateInfo {
+    VuQueryPoolCreateInfo() {
         sType = VK_STRUCTURE_TYPE_QUERY_POOL_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -227,8 +227,8 @@ struct VkutQueryPoolCreateInfo : VkQueryPoolCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutBufferCreateInfo : VkBufferCreateInfo {
-    VkutBufferCreateInfo() {
+struct VuBufferCreateInfo : VkBufferCreateInfo {
+    VuBufferCreateInfo() {
         sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -242,8 +242,8 @@ struct VkutBufferCreateInfo : VkBufferCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutBufferViewCreateInfo : VkBufferViewCreateInfo {
-    VkutBufferViewCreateInfo() {
+struct VuBufferViewCreateInfo : VkBufferViewCreateInfo {
+    VuBufferViewCreateInfo() {
         sType = VK_STRUCTURE_TYPE_BUFFER_VIEW_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
@@ -256,14 +256,14 @@ struct VkutBufferViewCreateInfo : VkBufferViewCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-struct VkutImageCreateInfo : VkImageCreateInfo {
-    VkutImageCreateInfo() {
+struct VuImageCreateInfo : VkImageCreateInfo {
+    VuImageCreateInfo() {
         sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
         imageType = VK_IMAGE_TYPE_1D;
         format = VK_FORMAT_UNDEFINED;
-        extent = VkutExtent3D();
+        extent = VuExtent3D();
         mipLevels = 1;
         arrayLayers = 1;
         samples = VK_SAMPLE_COUNT_1_BIT;
@@ -277,185 +277,185 @@ struct VkutImageCreateInfo : VkImageCreateInfo {
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateInstance(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateInstance(
     const VkInstanceCreateInfo&                 createInfo,
     VkInstance&                                 instance);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyInstance(
+VKAPI_ATTR void VKAPI_CALL vuDestroyInstance(
     VkInstance                                  instance);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutEnumeratePhysicalDevices(
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
     VkInstance                                  instance,
     std::vector<VkPhysicalDevice>&              physicalDevices);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceQueueFamilyProperties(
+VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceQueueFamilyProperties(
     VkPhysicalDevice                            physicalDevice,
     std::vector<VkQueueFamilyProperties>&       queueFamilyProperties);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDevice(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateDevice(
     VkPhysicalDevice                            physicalDevice,
     const VkDeviceCreateInfo*                   pCreateInfo,
     VkDevice*                                   pDevice);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyDevice(
+VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
     VkDevice                                    device);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutAllocateMemory(
+VKAPI_ATTR VkResult VKAPI_CALL vuAllocateMemory(
     VkDevice                                    device,
     const VkMemoryAllocateInfo*                 pAllocateInfo,
     VkDeviceMemory*                             pMemory);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutFreeMemory(
+VKAPI_ATTR void VKAPI_CALL vuFreeMemory(
     VkDevice                                    device,
     VkDeviceMemory                              memory);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateFence(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateFence(
     VkDevice                                    device,
     const VkFenceCreateInfo*                    pCreateInfo,
     VkFence*                                    pFence);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyFence(
+VKAPI_ATTR void VKAPI_CALL vuDestroyFence(
     VkDevice                                    device,
     VkFence                                     fence);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateSemaphore(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateSemaphore(
     VkDevice                                    device,
     const VkSemaphoreCreateInfo*                pCreateInfo,
     VkSemaphore*                                pSemaphore);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroySemaphore(
+VKAPI_ATTR void VKAPI_CALL vuDestroySemaphore(
     VkDevice                                    device,
     VkSemaphore                                 semaphore);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateEvent(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateEvent(
     VkDevice                                    device,
     const VkEventCreateInfo*                    pCreateInfo,
     VkEvent*                                    pEvent);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyEvent(
+VKAPI_ATTR void VKAPI_CALL vuDestroyEvent(
     VkDevice                                    device,
     VkEvent                                     event);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateQueryPool(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateQueryPool(
     VkDevice                                    device,
     const VkQueryPoolCreateInfo*                pCreateInfo,
     VkQueryPool*                                pQueryPool);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyQueryPool(
+VKAPI_ATTR void VKAPI_CALL vuDestroyQueryPool(
     VkDevice                                    device,
     VkQueryPool                                 queryPool);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateBuffer(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateBuffer(
     VkDevice                                    device,
     const VkBufferCreateInfo*                   pCreateInfo,
     VkBuffer*                                   pBuffer);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyBuffer(
+VKAPI_ATTR void VKAPI_CALL vuDestroyBuffer(
     VkDevice                                    device,
     VkBuffer                                    buffer);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateBufferView(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateBufferView(
     VkDevice                                    device,
     const VkBufferViewCreateInfo*               pCreateInfo,
     VkBufferView*                               pView);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyBufferView(
+VKAPI_ATTR void VKAPI_CALL vuDestroyBufferView(
     VkDevice                                    device,
     VkBufferView                                bufferView);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateImage(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateImage(
     VkDevice                                    device,
     const VkImageCreateInfo*                    pCreateInfo,
     VkImage*                                    pImage);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyImage(
+VKAPI_ATTR void VKAPI_CALL vuDestroyImage(
     VkDevice                                    device,
     VkImage                                     image);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateImageView(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateImageView(
     VkDevice                                    device,
     const VkImageViewCreateInfo*                pCreateInfo,
     VkImageView*                                pView);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyImageView(
+VKAPI_ATTR void VKAPI_CALL vuDestroyImageView(
     VkDevice                                    device,
     VkImageView                                 imageView);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateShaderModule(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateShaderModule(
     VkDevice                                    device,
     const VkShaderModuleCreateInfo*             pCreateInfo,
     VkShaderModule*                             pShaderModule);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyShaderModule(
+VKAPI_ATTR void VKAPI_CALL vuDestroyShaderModule(
     VkDevice                                    device,
     VkShaderModule                              shaderModule);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreatePipelineCache(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineCache(
     VkDevice                                    device,
     const VkPipelineCacheCreateInfo*            pCreateInfo,
     VkPipelineCache*                            pPipelineCache);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyPipelineCache(
+VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineCache(
     VkDevice                                    device,
     VkPipelineCache                             pipelineCache);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateGraphicsPipelines(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateGraphicsPipelines(
     VkDevice                                    device,
     VkPipelineCache                             pipelineCache,
     uint32_t                                    createInfoCount,
@@ -464,7 +464,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateGraphicsPipelines(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateComputePipelines(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateComputePipelines(
     VkDevice                                    device,
     VkPipelineCache                             pipelineCache,
     uint32_t                                    createInfoCount,
@@ -473,110 +473,110 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateComputePipelines(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyPipeline(
+VKAPI_ATTR void VKAPI_CALL vuDestroyPipeline(
     VkDevice                                    device,
     VkPipeline                                  pipeline);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreatePipelineLayout(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineLayout(
     VkDevice                                    device,
     const VkPipelineLayoutCreateInfo*           pCreateInfo,
     VkPipelineLayout*                           pPipelineLayout);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyPipelineLayout(
+VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineLayout(
     VkDevice                                    device,
     VkPipelineLayout                            pipelineLayout);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateSampler(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateSampler(
     VkDevice                                    device,
     const VkSamplerCreateInfo*                  pCreateInfo,
     VkSampler*                                  pSampler);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroySampler(
+VKAPI_ATTR void VKAPI_CALL vuDestroySampler(
     VkDevice                                    device,
     VkSampler                                   sampler);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDescriptorSetLayout(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorSetLayout(
     VkDevice                                    device,
     const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
     VkDescriptorSetLayout*                      pSetLayout);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyDescriptorSetLayout(
+VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorSetLayout(
     VkDevice                                    device,
     VkDescriptorSetLayout                       descriptorSetLayout);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDescriptorPool(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorPool(
     VkDevice                                    device,
     const VkDescriptorPoolCreateInfo*           pCreateInfo,
     VkDescriptorPool*                           pDescriptorPool);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyDescriptorPool(
+VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorPool(
     VkDevice                                    device,
     VkDescriptorPool                            descriptorPool);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateFramebuffer(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateFramebuffer(
     VkDevice                                    device,
     const VkFramebufferCreateInfo*              pCreateInfo,
     VkFramebuffer*                              pFramebuffer);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyFramebuffer(
+VKAPI_ATTR void VKAPI_CALL vuDestroyFramebuffer(
     VkDevice                                    device,
     VkFramebuffer                               framebuffer);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateRenderPass(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateRenderPass(
     VkDevice                                    device,
     const VkRenderPassCreateInfo*               pCreateInfo,
     VkRenderPass*                               pRenderPass);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyRenderPass(
+VKAPI_ATTR void VKAPI_CALL vuDestroyRenderPass(
     VkDevice                                    device,
     VkRenderPass                                renderPass);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateCommandPool(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateCommandPool(
     VkDevice                                    device,
     const VkCommandPoolCreateInfo*              pCreateInfo,
     VkCommandPool*                              pCommandPool);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyCommandPool(
+VKAPI_ATTR void VKAPI_CALL vuDestroyCommandPool(
     VkDevice                                    device,
     VkCommandPool                               commandPool);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceScore(
+VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceScore(
     VkPhysicalDevice                            physicalDevice,
     uint32_t&                                   score);
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutFindBestPhysicalDevice(
+VKAPI_ATTR VkResult VKAPI_CALL vuFindBestPhysicalDevice(
     VkInstance                                  instance,
     VkPhysicalDevice&                           physicalDevice);
 

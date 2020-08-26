@@ -9,7 +9,7 @@
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateInstance(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateInstance(
     const VkInstanceCreateInfo&                 createInfo,
     VkInstance&                                 instance) {
     return vkCreateInstance(&createInfo, nullptr, &instance);
@@ -17,14 +17,14 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateInstance(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyInstance(
+VKAPI_ATTR void VKAPI_CALL vuDestroyInstance(
     VkInstance                                  instance) {
     vkDestroyInstance(instance, nullptr);
 }
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutEnumeratePhysicalDevices(
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
     VkInstance                                  instance,
     std::vector<VkPhysicalDevice>&              physicalDevices) {
     // Initialize out parameters.
@@ -47,7 +47,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutEnumeratePhysicalDevices(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceQueueFamilyProperties(
+VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceQueueFamilyProperties(
     VkPhysicalDevice                            physicalDevice,
     std::vector<VkQueueFamilyProperties>&       queueFamilyProperties) {
     // Initialize out parameters.
@@ -63,7 +63,7 @@ VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceQueueFamilyProperties(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDevice(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateDevice(
     VkPhysicalDevice                            physicalDevice,
     const VkDeviceCreateInfo*                   pCreateInfo,
     VkDevice*                                   pDevice) {
@@ -72,14 +72,14 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDevice(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyDevice(
+VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
     VkDevice                                    device) {
     vkDestroyDevice(device, nullptr);
 }
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutAllocateMemory(
+VKAPI_ATTR VkResult VKAPI_CALL vuAllocateMemory(
     VkDevice                                    device,
     const VkMemoryAllocateInfo*                 pAllocateInfo,
     VkDeviceMemory*                             pMemory) {
@@ -88,7 +88,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutAllocateMemory(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutFreeMemory(
+VKAPI_ATTR void VKAPI_CALL vuFreeMemory(
     VkDevice                                    device,
     VkDeviceMemory                              memory) {
     vkFreeMemory(device, memory, nullptr);
@@ -96,7 +96,7 @@ VKAPI_ATTR void VKAPI_CALL vkutFreeMemory(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateFence(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateFence(
     VkDevice                                    device,
     const VkFenceCreateInfo*                    pCreateInfo,
     VkFence*                                    pFence) {
@@ -105,7 +105,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateFence(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyFence(
+VKAPI_ATTR void VKAPI_CALL vuDestroyFence(
     VkDevice                                    device,
     VkFence                                     fence) {
     vkDestroyFence(device, fence, nullptr);
@@ -113,7 +113,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyFence(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateSemaphore(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateSemaphore(
     VkDevice                                    device,
     const VkSemaphoreCreateInfo*                pCreateInfo,
     VkSemaphore*                                pSemaphore) {
@@ -122,7 +122,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateSemaphore(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroySemaphore(
+VKAPI_ATTR void VKAPI_CALL vuDestroySemaphore(
     VkDevice                                    device,
     VkSemaphore                                 semaphore) {
     vkDestroySemaphore(device, semaphore, nullptr);
@@ -130,7 +130,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroySemaphore(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateEvent(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateEvent(
     VkDevice                                    device,
     const VkEventCreateInfo*                    pCreateInfo,
     VkEvent*                                    pEvent) {
@@ -139,7 +139,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateEvent(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyEvent(
+VKAPI_ATTR void VKAPI_CALL vuDestroyEvent(
     VkDevice                                    device,
     VkEvent                                     event) {
     return vkDestroyEvent(device, event, nullptr);
@@ -147,7 +147,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyEvent(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateQueryPool(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateQueryPool(
     VkDevice                                    device,
     const VkQueryPoolCreateInfo*                pCreateInfo,
     VkQueryPool*                                pQueryPool) {
@@ -156,7 +156,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateQueryPool(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyQueryPool(
+VKAPI_ATTR void VKAPI_CALL vuDestroyQueryPool(
     VkDevice                                    device,
     VkQueryPool                                 queryPool) {
     vkDestroyQueryPool(device, queryPool, nullptr);
@@ -164,7 +164,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyQueryPool(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateBuffer(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateBuffer(
     VkDevice                                    device,
     const VkBufferCreateInfo*                   pCreateInfo,
     VkBuffer*                                   pBuffer) {
@@ -173,7 +173,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateBuffer(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyBuffer(
+VKAPI_ATTR void VKAPI_CALL vuDestroyBuffer(
     VkDevice                                    device,
     VkBuffer                                    buffer) {
     vkDestroyBuffer(device, buffer, nullptr);
@@ -181,7 +181,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyBuffer(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateBufferView(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateBufferView(
     VkDevice                                    device,
     const VkBufferViewCreateInfo*               pCreateInfo,
     VkBufferView*                               pView) {
@@ -190,7 +190,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateBufferView(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyBufferView(
+VKAPI_ATTR void VKAPI_CALL vuDestroyBufferView(
     VkDevice                                    device,
     VkBufferView                                bufferView) {
     vkDestroyBufferView(device, bufferView, nullptr);
@@ -198,7 +198,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyBufferView(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateImage(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateImage(
     VkDevice                                    device,
     const VkImageCreateInfo*                    pCreateInfo,
     VkImage*                                    pImage) {
@@ -207,7 +207,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateImage(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyImage(
+VKAPI_ATTR void VKAPI_CALL vuDestroyImage(
     VkDevice                                    device,
     VkImage                                     image) {
     vkDestroyImage(device, image, nullptr);
@@ -215,7 +215,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyImage(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateImageView(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateImageView(
     VkDevice                                    device,
     const VkImageViewCreateInfo*                pCreateInfo,
     VkImageView*                                pView) {
@@ -224,7 +224,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateImageView(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyImageView(
+VKAPI_ATTR void VKAPI_CALL vuDestroyImageView(
     VkDevice                                    device,
     VkImageView                                 imageView) {
     vkDestroyImageView(device, imageView, nullptr);
@@ -232,7 +232,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyImageView(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateShaderModule(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateShaderModule(
     VkDevice                                    device,
     const VkShaderModuleCreateInfo*             pCreateInfo,
     VkShaderModule*                             pShaderModule) {
@@ -241,7 +241,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateShaderModule(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyShaderModule(
+VKAPI_ATTR void VKAPI_CALL vuDestroyShaderModule(
     VkDevice                                    device,
     VkShaderModule                              shaderModule) {
     vkDestroyShaderModule(device, shaderModule, nullptr);
@@ -249,7 +249,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyShaderModule(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreatePipelineCache(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineCache(
     VkDevice                                    device,
     const VkPipelineCacheCreateInfo*            pCreateInfo,
     VkPipelineCache*                            pPipelineCache) {
@@ -258,7 +258,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreatePipelineCache(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyPipelineCache(
+VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineCache(
     VkDevice                                    device,
     VkPipelineCache                             pipelineCache) {
     vkDestroyPipelineCache(device, pipelineCache, nullptr);
@@ -266,7 +266,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyPipelineCache(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateGraphicsPipelines(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateGraphicsPipelines(
     VkDevice                                    device,
     VkPipelineCache                             pipelineCache,
     uint32_t                                    createInfoCount,
@@ -277,7 +277,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateGraphicsPipelines(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateComputePipelines(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateComputePipelines(
     VkDevice                                    device,
     VkPipelineCache                             pipelineCache,
     uint32_t                                    createInfoCount,
@@ -288,7 +288,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateComputePipelines(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyPipeline(
+VKAPI_ATTR void VKAPI_CALL vuDestroyPipeline(
     VkDevice                                    device,
     VkPipeline                                  pipeline) {
     vkDestroyPipeline(device, pipeline, nullptr);
@@ -296,7 +296,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyPipeline(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreatePipelineLayout(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineLayout(
     VkDevice                                    device,
     const VkPipelineLayoutCreateInfo*           pCreateInfo,
     VkPipelineLayout*                           pPipelineLayout) {
@@ -305,7 +305,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreatePipelineLayout(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyPipelineLayout(
+VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineLayout(
     VkDevice                                    device,
     VkPipelineLayout                            pipelineLayout) {
     vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
@@ -313,7 +313,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyPipelineLayout(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateSampler(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateSampler(
     VkDevice                                    device,
     const VkSamplerCreateInfo*                  pCreateInfo,
     VkSampler*                                  pSampler) {
@@ -322,7 +322,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateSampler(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroySampler(
+VKAPI_ATTR void VKAPI_CALL vuDestroySampler(
     VkDevice                                    device,
     VkSampler                                   sampler) {
     vkDestroySampler(device, sampler, nullptr);
@@ -330,7 +330,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroySampler(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDescriptorSetLayout(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorSetLayout(
     VkDevice                                    device,
     const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
     VkDescriptorSetLayout*                      pSetLayout) {
@@ -339,7 +339,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDescriptorSetLayout(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyDescriptorSetLayout(
+VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorSetLayout(
     VkDevice                                    device,
     VkDescriptorSetLayout                       descriptorSetLayout) {
     vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
@@ -347,7 +347,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyDescriptorSetLayout(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDescriptorPool(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorPool(
     VkDevice                                    device,
     const VkDescriptorPoolCreateInfo*           pCreateInfo,
     VkDescriptorPool*                           pDescriptorPool) {
@@ -356,7 +356,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateDescriptorPool(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyDescriptorPool(
+VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorPool(
     VkDevice                                    device,
     VkDescriptorPool                            descriptorPool) {
     vkDestroyDescriptorPool(device, descriptorPool, nullptr);
@@ -364,7 +364,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyDescriptorPool(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateFramebuffer(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateFramebuffer(
     VkDevice                                    device,
     const VkFramebufferCreateInfo*              pCreateInfo,
     VkFramebuffer*                              pFramebuffer) {
@@ -373,7 +373,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateFramebuffer(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyFramebuffer(
+VKAPI_ATTR void VKAPI_CALL vuDestroyFramebuffer(
     VkDevice                                    device,
     VkFramebuffer                               framebuffer) {
     vkDestroyFramebuffer(device, framebuffer, nullptr);
@@ -381,7 +381,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyFramebuffer(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateRenderPass(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateRenderPass(
     VkDevice                                    device,
     const VkRenderPassCreateInfo*               pCreateInfo,
     VkRenderPass*                               pRenderPass) {
@@ -390,7 +390,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateRenderPass(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyRenderPass(
+VKAPI_ATTR void VKAPI_CALL vuDestroyRenderPass(
     VkDevice                                    device,
     VkRenderPass                                renderPass) {
     vkDestroyRenderPass(device, renderPass, nullptr);
@@ -398,7 +398,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyRenderPass(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutCreateCommandPool(
+VKAPI_ATTR VkResult VKAPI_CALL vuCreateCommandPool(
     VkDevice                                    device,
     const VkCommandPoolCreateInfo*              pCreateInfo,
     VkCommandPool*                              pCommandPool) {
@@ -407,7 +407,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateCommandPool(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutDestroyCommandPool(
+VKAPI_ATTR void VKAPI_CALL vuDestroyCommandPool(
     VkDevice                                    device,
     VkCommandPool                               commandPool) {
     vkDestroyCommandPool(device, commandPool, nullptr);
@@ -415,7 +415,7 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyCommandPool(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceScore(
+VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceScore(
     VkPhysicalDevice                            physicalDevice,
     uint32_t&                                   score) {
     // Initialize out parameters.
@@ -445,7 +445,7 @@ VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceScore(
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vkutFindBestPhysicalDevice(
+VKAPI_ATTR VkResult VKAPI_CALL vuFindBestPhysicalDevice(
     VkInstance                                  instance,
     VkPhysicalDevice&                           physicalDevice) {
     // Initialize out paramters.
@@ -455,7 +455,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutFindBestPhysicalDevice(
     VkResult status;
 
     std::vector<VkPhysicalDevice> physicalDevices;
-    status = vkutEnumeratePhysicalDevices(instance, physicalDevices);
+    status = vuEnumeratePhysicalDevices(instance, physicalDevices);
 
     if (status != VK_SUCCESS && status != VK_INCOMPLETE)
         return status;
@@ -463,7 +463,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutFindBestPhysicalDevice(
     uint32_t maxScore = 0;
     for (auto i = 0; i != physicalDevices.size(); ++i) {
         uint32_t curScore;
-        vkutGetPhysicalDeviceScore(physicalDevices[i], curScore);
+        vuGetPhysicalDeviceScore(physicalDevices[i], curScore);
 
         if (curScore > maxScore) {
             physicalDevice = physicalDevices[i];
