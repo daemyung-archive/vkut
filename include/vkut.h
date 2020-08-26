@@ -3,14 +3,11 @@
 // See "LICENSE" for license information.
 //
 
+// clang-format off
 #ifndef VKUT_VKUT_H_
 #define VKUT_VKUT_H_
 
 #pragma warning(disable : 26812)
-
-#ifdef VK_NO_PROTOTPYES
-#error
-#endif
 
 #include <vulkan/vulkan.h>
 
@@ -27,6 +24,16 @@ struct VkutApplicationInfo : VkApplicationInfo {
         pEngineName = nullptr;
         engineVersion = VK_MAKE_VERSION(0, 0, 0);
         apiVersion = VK_API_VERSION_1_0;
+    }
+
+    void SetApplicationInfo(const char* pName, uint8_t major, uint32_t minor, uint32_t patch) {
+        pApplicationName = pName;
+        applicationVersion = VK_MAKE_VERSION(major, minor, patch);
+    }
+
+    void SetEngineInfo(const char* pName, uint8_t major, uint32_t minor, uint32_t patch) {
+        pEngineName = pName;
+        engineVersion = VK_MAKE_VERSION(major, minor, patch);
     }
 };
 
@@ -271,13 +278,25 @@ struct VkutImageCreateInfo : VkImageCreateInfo {
 //-----------------------------------------------------------------------------
 
 VKAPI_ATTR VkResult VKAPI_CALL vkutCreateInstance(
-    const VkInstanceCreateInfo*                 pCreateInfo,
-    VkInstance*                                 pInstance);
+    const VkInstanceCreateInfo&                 createInfo,
+    VkInstance&                                 instance);
 
 //-----------------------------------------------------------------------------
 
 VKAPI_ATTR void VKAPI_CALL vkutDestroyInstance(
     VkInstance                                  instance);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vkutEnumeratePhysicalDevices(
+    VkInstance                                  instance,
+    std::vector<VkPhysicalDevice>&              physicalDevices);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceQueueFamilyProperties(
+    VkPhysicalDevice                            physicalDevice,
+    std::vector<VkQueueFamilyProperties>&       queueFamilyProperties);
 
 //-----------------------------------------------------------------------------
 
@@ -551,5 +570,18 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyCommandPool(
 
 //-----------------------------------------------------------------------------
 
+VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceScore(
+    VkPhysicalDevice                            physicalDevice,
+    uint32_t&                                   score);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vkutFindBestPhysicalDevice(
+    VkInstance                                  instance,
+    VkPhysicalDevice&                           physicalDevice);
+
+//-----------------------------------------------------------------------------
+
 #endif  // VKUT_VKUT_H_
 
+// clang-format on

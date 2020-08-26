@@ -3,14 +3,16 @@
 // See "LICENSE" for license information.
 //
 
+// clang-format off
+
 #include "vkut.h"
 
 //-----------------------------------------------------------------------------
 
 VKAPI_ATTR VkResult VKAPI_CALL vkutCreateInstance(
-    const VkInstanceCreateInfo*                 pCreateInfo,
-    VkInstance*                                 pInstance) {
-    return vkCreateInstance(pCreateInfo, nullptr, pInstance);
+    const VkInstanceCreateInfo&                 createInfo,
+    VkInstance&                                 instance) {
+    return vkCreateInstance(&createInfo, nullptr, &instance);
 }
 
 //-----------------------------------------------------------------------------
@@ -18,6 +20,45 @@ VKAPI_ATTR VkResult VKAPI_CALL vkutCreateInstance(
 VKAPI_ATTR void VKAPI_CALL vkutDestroyInstance(
     VkInstance                                  instance) {
     vkDestroyInstance(instance, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vkutEnumeratePhysicalDevices(
+    VkInstance                                  instance,
+    std::vector<VkPhysicalDevice>&              physicalDevices) {
+    // Initialize out parameters.
+    physicalDevices.clear();
+
+    // Enumerate all physical devices.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumeratePhysicalDevices(instance, &count, nullptr);
+
+    if (status != VK_SUCCESS && status != VK_INCOMPLETE)
+        return status;
+
+    physicalDevices.resize(count);
+    status = vkEnumeratePhysicalDevices(instance, &count, &physicalDevices[0]);
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceQueueFamilyProperties(
+    VkPhysicalDevice                            physicalDevice,
+    std::vector<VkQueueFamilyProperties>&       queueFamilyProperties) {
+    // Initialize out parameters.
+    queueFamilyProperties.clear();
+
+    // Get all queue family properties.
+    uint32_t count;
+    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, nullptr);
+
+    queueFamilyProperties.resize(count);
+    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, &queueFamilyProperties[0]);
 }
 
 //-----------------------------------------------------------------------------
@@ -373,3 +414,66 @@ VKAPI_ATTR void VKAPI_CALL vkutDestroyCommandPool(
 }
 
 //-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vkutGetPhysicalDeviceScore(
+    VkPhysicalDevice                            physicalDevice,
+    uint32_t&                                   score) {
+    // Initialize out parameters.
+    score = 0;
+
+    // Measure the physical device score.
+    VkPhysicalDeviceProperties properties;
+    vkGetPhysicalDeviceProperties(physicalDevice, &properties);
+
+    switch (properties.deviceType) {
+        case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU:
+            score += 200;
+            break;
+        case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:
+            score += 400;
+            break;
+        case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:
+            score += 300;
+            break;
+        case VK_PHYSICAL_DEVICE_TYPE_CPU:
+            score += 100;
+            break;
+		default:
+	        break;
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vkutFindBestPhysicalDevice(
+    VkInstance                                  instance,
+    VkPhysicalDevice&                           physicalDevice) {
+    // Initialize out paramters.
+    physicalDevice = VK_NULL_HANDLE;
+
+    // Find a best physical device.
+    VkResult status;
+
+    std::vector<VkPhysicalDevice> physicalDevices;
+    status = vkutEnumeratePhysicalDevices(instance, physicalDevices);
+
+    if (status != VK_SUCCESS && status != VK_INCOMPLETE)
+        return status;
+
+    uint32_t maxScore = 0;
+    for (auto i = 0; i != physicalDevices.size(); ++i) {
+        uint32_t curScore;
+        vkutGetPhysicalDeviceScore(physicalDevices[i], curScore);
+
+        if (curScore > maxScore) {
+            physicalDevice = physicalDevices[i];
+            maxScore = curScore;
+        }
+    }
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+// clang-format on
