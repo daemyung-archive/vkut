@@ -51,36 +51,24 @@ struct VuInstanceCreateInfo : VkInstanceCreateInfo {
         ppEnabledExtensionNames = nullptr;
     }
 
-    void SetEnabledLayerName(const char*& pName) {
+    void SetEnabledLayerName(const char** ppName) {
         enabledLayerCount = 1;
-        ppEnabledLayerNames = &pName;
+        ppEnabledLayerNames = ppName;
     }
 
-    template<typename T>
-    void SetEnabledLayerNames(T count, const char** ppNames) {
-        enabledLayerCount = static_cast<uint32_t>(count);
-        ppEnabledLayerNames = ppNames;
+    void SetEnabledLayerNames(const std::vector<const char*>* pNames) {
+        enabledLayerCount = static_cast<uint32_t>(pNames->size());
+        ppEnabledLayerNames = pNames->data();
     }
 
-    void SetEnabledLayerNames(std::vector<const char*>& names) {
-        enabledLayerCount = static_cast<uint32_t>(names.size());
-        ppEnabledLayerNames = names.data();
-    }
-
-    void SetEnabledExtensionName(const char*& pName) {
+    void SetEnabledExtensionName(const char** ppName) {
         enabledExtensionCount = 1;
-        ppEnabledExtensionNames = &pName;
+        ppEnabledExtensionNames = ppName;
     }
 
-    template<typename T>
-    void SetEnabledExtensionNames(T count, const char** ppNames) {
-        enabledExtensionCount = static_cast<uint32_t>(count);
-        ppEnabledExtensionNames = ppNames;
-    }
-
-    void SetEnabledExtensionNames(std::vector<const char*>& names) {
-        enabledExtensionCount = static_cast<uint32_t>(names.size());
-        ppEnabledExtensionNames = names.data();
+    void SetEnabledExtensionNames(const std::vector<const char*>* pNames) {
+        enabledExtensionCount = static_cast<uint32_t>(pNames->size());
+        ppEnabledExtensionNames = pNames->data();
     }
 };
 
@@ -98,12 +86,17 @@ struct VuExtent3D : VkExtent3D {
 
 struct VuDeviceQueueCreateInfo : VkDeviceQueueCreateInfo {
     VuDeviceQueueCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         pNext = nullptr;
         flags = 0;
         queueFamilyIndex = 0;
         queueCount = 0;
         pQueuePriorities = nullptr;
+    }
+
+    void SetQueueInfo(uint32_t count, const float* pPriorities) {
+        queueCount = count;
+        pQueuePriorities = pPriorities;
     }
 };
 
@@ -122,6 +115,26 @@ struct VuDeviceCreateInfo : VkDeviceCreateInfo {
         ppEnabledExtensionNames = nullptr;
         pEnabledFeatures = nullptr;
     }
+
+    void SetQueueCreateInfo(const VkDeviceQueueCreateInfo* pCreateInfo) {
+        queueCreateInfoCount = 1;
+        pQueueCreateInfos = pCreateInfo;
+    }
+
+    void SetQueueCreateInfos(const std::vector<VkDeviceQueueCreateInfo>* pCreateInfos) {
+        queueCreateInfoCount = static_cast<uint32_t>(pCreateInfos->size());
+        pQueueCreateInfos = pCreateInfos->data();
+    }
+
+    void SetEnabledExtensionName(const char** ppName) {
+        enabledExtensionCount = 1;
+        ppEnabledExtensionNames = ppName;
+    }
+
+    void SetEnabledExtensionNames(const std::vector<const char*>* pNames) {
+        enabledExtensionCount = static_cast<uint32_t>(pNames->size());
+        ppEnabledExtensionNames = pNames->data();
+    }
 };
 
 //-----------------------------------------------------------------------------
@@ -137,6 +150,11 @@ struct VuSubmitInfo : VkSubmitInfo {
         pCommandBuffers = nullptr;
         signalSemaphoreCount = 0;
         pSignalSemaphores = nullptr;
+    }
+
+    void SetCommandBuffer(const VkCommandBuffer* pCommandBuffer) {
+        commandBufferCount = 1;
+        pCommandBuffers = pCommandBuffer;
     }
 };
 
@@ -277,9 +295,129 @@ struct VuImageCreateInfo : VkImageCreateInfo {
 
 //-----------------------------------------------------------------------------
 
+struct VuComponentMapping : VkComponentMapping {
+    VuComponentMapping() {
+        r = VK_COMPONENT_SWIZZLE_IDENTITY;
+        g = VK_COMPONENT_SWIZZLE_IDENTITY;
+        b = VK_COMPONENT_SWIZZLE_IDENTITY;
+        a = VK_COMPONENT_SWIZZLE_IDENTITY;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuImageSubresourceRange : VkImageSubresourceRange {
+    VuImageSubresourceRange() {
+        aspectMask = 0;
+        baseMipLevel = 0;
+        levelCount = 0;
+        baseArrayLayer = 0;
+        layerCount = 0;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuImageViewCreateInfo : VkImageViewCreateInfo {
+    VuImageViewCreateInfo() {
+        sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        pNext = nullptr;
+        flags = 0;
+        image = VK_NULL_HANDLE;
+        viewType = VK_IMAGE_VIEW_TYPE_1D;
+        format = VK_FORMAT_UNDEFINED;
+        components = VuComponentMapping();
+        subresourceRange = VuImageSubresourceRange();
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuCommandPoolCreateInfo : VkCommandPoolCreateInfo {
+    VuCommandPoolCreateInfo() {
+        sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+        pNext = nullptr;
+        flags = 0;
+        queueFamilyIndex = 0;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuCommandBufferAllocateInfo : VkCommandBufferAllocateInfo {
+    VuCommandBufferAllocateInfo() {
+        sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        pNext = nullptr;
+        commandPool = VK_NULL_HANDLE;
+        level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        commandBufferCount = 0;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuCommandBufferBeginInfo : VkCommandBufferBeginInfo {
+    VuCommandBufferBeginInfo() {
+        sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        pNext = nullptr;
+        flags = 0;
+        pInheritanceInfo = nullptr;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuImageMemoryBarrier : VkImageMemoryBarrier {
+    VuImageMemoryBarrier() {
+        sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        pNext = nullptr;
+        srcAccessMask = 0;
+        dstAccessMask = 0;
+        oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        newLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        srcQueueFamilyIndex = 0;
+        dstQueueFamilyIndex = 0;
+        image = VK_NULL_HANDLE;
+        subresourceRange = VuImageSubresourceRange();
+    }
+
+    void SetQueueFamilyIndex(uint32_t queueFamilyIndex) {
+        srcQueueFamilyIndex = queueFamilyIndex;
+        dstQueueFamilyIndex = queueFamilyIndex;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuSamplerCreateInfo : VkSamplerCreateInfo {
+    VuSamplerCreateInfo() {
+        sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+        pNext = nullptr;
+        flags = 0;
+        magFilter = VK_FILTER_NEAREST;
+        minFilter = VK_FILTER_NEAREST;
+        mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
+        addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        mipLodBias = 0.0f;
+        anisotropyEnable = VK_FALSE;
+        maxAnisotropy = 0.0f;
+        compareEnable = VK_FALSE;
+        compareOp = VK_COMPARE_OP_NEVER;
+        minLod = 0.0f;
+        maxLod = 0.0f;
+        borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
+        unnormalizedCoordinates = VK_FALSE;
+    }
+};
+
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR VkResult VKAPI_CALL vuCreateInstance(
-    const VkInstanceCreateInfo&                 createInfo,
-    VkInstance&                                 instance);
+    const VkInstanceCreateInfo*                 pCreateInfo,
+    VkInstance*                                 pInstance);
 
 //-----------------------------------------------------------------------------
 
@@ -290,13 +428,13 @@ VKAPI_ATTR void VKAPI_CALL vuDestroyInstance(
 
 VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
     VkInstance                                  instance,
-    std::vector<VkPhysicalDevice>&              physicalDevices);
+    std::vector<VkPhysicalDevice>*              pPhysicalDevices);
 
 //-----------------------------------------------------------------------------
 
 VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceQueueFamilyProperties(
     VkPhysicalDevice                            physicalDevice,
-    std::vector<VkQueueFamilyProperties>&       queueFamilyProperties);
+    std::vector<VkQueueFamilyProperties>*       pQueueFamilyProperties);
 
 //-----------------------------------------------------------------------------
 
@@ -312,6 +450,20 @@ VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
 
 //-----------------------------------------------------------------------------
 
+VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
+    VkQueue                                     queue,
+    const VkSubmitInfo*                         pSubmit,
+    VkFence                                     fence);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
+    VkQueue                                     queue,
+    const std::vector<VkSubmitInfo>*            pSubmits,
+    VkFence                                     fence);
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR VkResult VKAPI_CALL vuAllocateMemory(
     VkDevice                                    device,
     const VkMemoryAllocateInfo*                 pAllocateInfo,
@@ -321,6 +473,27 @@ VKAPI_ATTR VkResult VKAPI_CALL vuAllocateMemory(
 
 VKAPI_ATTR void VKAPI_CALL vuFreeMemory(
     VkDevice                                    device,
+    VkDeviceMemory                              memory);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuMapMemory(
+    VkDevice                                    device,
+    VkDeviceMemory                              memory,
+    void**                                      ppData);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuBindBufferMemory(
+    VkDevice                                    device,
+    VkBuffer                                    buffer,
+    VkDeviceMemory                              memory);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuBindImageMemory(
+    VkDevice                                    device,
+    VkImage                                     image,
     VkDeviceMemory                              memory);
 
 //-----------------------------------------------------------------------------
@@ -570,15 +743,148 @@ VKAPI_ATTR void VKAPI_CALL vuDestroyCommandPool(
 
 //-----------------------------------------------------------------------------
 
+VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffer(
+    VkDevice                                    device,
+    VkCommandPool                               commandPool,
+    const VkCommandBuffer*                      pCommandBuffer);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffers(
+    VkDevice                                    device,
+    VkCommandPool                               commandPool,
+    const std::vector<VkCommandBuffer>*         pCommandBuffers);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkBuffer                                    dstBuffer,
+    const VkBufferCopy*                         pRegion);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkBuffer                                    dstBuffer,
+    const std::vector<VkBufferCopy>*            pRegions);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const VkImageCopy*                          pRegion);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const std::vector<VkImageCopy>*             pRegions);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const VkImageBlit*                          pRegion,
+    VkFilter                                    filter);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const std::vector<VkImageBlit>*             pRegions,
+    VkFilter                                    filter);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const VkBufferImageCopy*                    pRegion);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const std::vector<VkBufferImageCopy>*       pRegions);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkBuffer                                    dstBuffer,
+    const VkBufferImageCopy*                    pRegion);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkBuffer                                    dstBuffer,
+    const std::vector<VkBufferImageCopy>*       pRegions);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineStageFlags                        srcStageMask,
+    VkPipelineStageFlags                        dstStageMask,
+    VkDependencyFlags                           dependencyFlags,
+    const VkImageMemoryBarrier*                 pImageMemoryBarrier);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineStageFlags                        srcStageMask,
+    VkPipelineStageFlags                        dstStageMask,
+    VkDependencyFlags                           dependencyFlags,
+    const std::vector<VkImageMemoryBarrier>*    pImageMemoryBarriers);
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceScore(
     VkPhysicalDevice                            physicalDevice,
-    uint32_t&                                   score);
+    uint32_t*                                   pScore);
 
 //-----------------------------------------------------------------------------
 
 VKAPI_ATTR VkResult VKAPI_CALL vuFindBestPhysicalDevice(
     VkInstance                                  instance,
-    VkPhysicalDevice&                           physicalDevice);
+    VkPhysicalDevice*                           pPhysicalDevice);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuFindQueueFamilyIndex(
+    VkPhysicalDevice                            physicalDevice,
+    VkQueueFlags                                queueFlags,
+    uint32_t*                                   pQueueFamilyIndex);
 
 //-----------------------------------------------------------------------------
 

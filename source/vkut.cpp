@@ -9,10 +9,26 @@
 
 //-----------------------------------------------------------------------------
 
+bool IsAnyFlagSet(
+    uint32_t                                    value,
+    uint32_t                                    test) {
+    return (value & test) != 0;
+}
+
+//-----------------------------------------------------------------------------
+
+bool IsAllFlagsSet(
+    uint32_t                                    value,
+    uint32_t                                    test) {
+    return (value & test) == test;
+}
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR VkResult VKAPI_CALL vuCreateInstance(
-    const VkInstanceCreateInfo&                 createInfo,
-    VkInstance&                                 instance) {
-    return vkCreateInstance(&createInfo, nullptr, &instance);
+    const VkInstanceCreateInfo*                 pCreateInfo,
+    VkInstance*                                 pInstance) {
+    return vkCreateInstance(pCreateInfo, nullptr, pInstance);
 }
 
 //-----------------------------------------------------------------------------
@@ -26,9 +42,9 @@ VKAPI_ATTR void VKAPI_CALL vuDestroyInstance(
 
 VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
     VkInstance                                  instance,
-    std::vector<VkPhysicalDevice>&              physicalDevices) {
+    std::vector<VkPhysicalDevice>*              pPhysicalDevices) {
     // Initialize out parameters.
-    physicalDevices.clear();
+    pPhysicalDevices->clear();
 
     // Enumerate all physical devices.
     VkResult status;
@@ -39,8 +55,8 @@ VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
     if (status != VK_SUCCESS && status != VK_INCOMPLETE)
         return status;
 
-    physicalDevices.resize(count);
-    status = vkEnumeratePhysicalDevices(instance, &count, &physicalDevices[0]);
+    pPhysicalDevices->resize(count);
+    status = vkEnumeratePhysicalDevices(instance, &count, pPhysicalDevices->data());
 
     return status;
 }
@@ -49,16 +65,16 @@ VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
 
 VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceQueueFamilyProperties(
     VkPhysicalDevice                            physicalDevice,
-    std::vector<VkQueueFamilyProperties>&       queueFamilyProperties) {
+    std::vector<VkQueueFamilyProperties>*       pQueueFamilyProperties) {
     // Initialize out parameters.
-    queueFamilyProperties.clear();
+    pQueueFamilyProperties->clear();
 
     // Get all queue family properties.
     uint32_t count;
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, nullptr);
 
-    queueFamilyProperties.resize(count);
-    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, &queueFamilyProperties[0]);
+    pQueueFamilyProperties->resize(count);
+    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, pQueueFamilyProperties->data());
 }
 
 //-----------------------------------------------------------------------------
@@ -79,6 +95,24 @@ VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
 
 //-----------------------------------------------------------------------------
 
+VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
+    VkQueue                                     queue,
+    const VkSubmitInfo*                         pSubmit,
+    VkFence                                     fence) {
+    return vkQueueSubmit(queue, 1, pSubmit, fence);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
+    VkQueue                                     queue,
+    const std::vector<VkSubmitInfo>*            pSubmits,
+    VkFence                                     fence) {
+    return vkQueueSubmit(queue, static_cast<uint32_t>(pSubmits->size()), pSubmits->data(), fence);
+}
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR VkResult VKAPI_CALL vuAllocateMemory(
     VkDevice                                    device,
     const VkMemoryAllocateInfo*                 pAllocateInfo,
@@ -92,6 +126,33 @@ VKAPI_ATTR void VKAPI_CALL vuFreeMemory(
     VkDevice                                    device,
     VkDeviceMemory                              memory) {
     vkFreeMemory(device, memory, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuMapMemory(
+    VkDevice                                    device,
+    VkDeviceMemory                              memory,
+    void**                                      ppData) {
+    return vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, ppData);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuBindBufferMemory(
+    VkDevice                                    device,
+    VkBuffer                                    buffer,
+    VkDeviceMemory                              memory) {
+    return vkBindBufferMemory(device, buffer, memory, 0);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuBindImageMemory(
+    VkDevice                                    device,
+    VkImage                                     image,
+    VkDeviceMemory                              memory) {
+    return vkBindImageMemory(device, image, memory, 0);
 }
 
 //-----------------------------------------------------------------------------
@@ -415,11 +476,165 @@ VKAPI_ATTR void VKAPI_CALL vuDestroyCommandPool(
 
 //-----------------------------------------------------------------------------
 
+VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffer(
+    VkDevice                                    device,
+    VkCommandPool                               commandPool,
+    const VkCommandBuffer*                      pCommandBuffer) {
+    vkFreeCommandBuffers(device, commandPool, 1, pCommandBuffer);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffers(
+    VkDevice                                    device,
+    VkCommandPool                               commandPool,
+    const std::vector<VkCommandBuffer>*         pCommandBuffers) {
+    vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(pCommandBuffers->size()), pCommandBuffers->data());
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkBuffer                                    dstBuffer,
+    const VkBufferCopy*                         pRegion) {
+    vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, pRegion);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkBuffer                                    dstBuffer,
+    const std::vector<VkBufferCopy>*            pRegions) {
+    vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const VkImageCopy*                          pRegion) {
+    vkCmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, 1, pRegion);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const std::vector<VkImageCopy>*             pRegions) {
+    vkCmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const VkImageBlit*                          pRegion,
+    VkFilter                                    filter) {
+    vkCmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, 1, pRegion, filter);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const std::vector<VkImageBlit>*             pRegions,
+    VkFilter                                    filter) {
+    vkCmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, static_cast<uint32_t>(pRegions->size()), pRegions->data(), filter);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const VkBufferImageCopy*                    pRegion) {
+    vkCmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, 1, pRegion);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkImage                                     dstImage,
+    VkImageLayout                               dstImageLayout,
+    const std::vector<VkBufferImageCopy>*       pRegions) {
+    vkCmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkBuffer                                    dstBuffer,
+    const VkBufferImageCopy*                    pRegion) {
+    vkCmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, 1, pRegion);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkImage                                     srcImage,
+    VkImageLayout                               srcImageLayout,
+    VkBuffer                                    dstBuffer,
+    const std::vector<VkBufferImageCopy>*       pRegions) {
+    vkCmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineStageFlags                        srcStageMask,
+    VkPipelineStageFlags                        dstStageMask,
+    VkDependencyFlags                           dependencyFlags,
+    const VkImageMemoryBarrier*                 pImageMemoryBarrier) {
+    vkCmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, 1, pImageMemoryBarrier);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
+    VkCommandBuffer                             commandBuffer,
+    VkPipelineStageFlags                        srcStageMask,
+    VkPipelineStageFlags                        dstStageMask,
+    VkDependencyFlags                           dependencyFlags,
+    const std::vector<VkImageMemoryBarrier>*    pImageMemoryBarriers) {
+    vkCmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, static_cast<uint32_t>(pImageMemoryBarriers->size()), pImageMemoryBarriers->data());
+}
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceScore(
     VkPhysicalDevice                            physicalDevice,
-    uint32_t&                                   score) {
+    uint32_t*                                   pScore) {
     // Initialize out parameters.
-    score = 0;
+    *pScore = 0;
 
     // Measure the physical device score.
     VkPhysicalDeviceProperties properties;
@@ -427,16 +642,16 @@ VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceScore(
 
     switch (properties.deviceType) {
         case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU:
-            score += 200;
+            *pScore += 200;
             break;
         case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:
-            score += 400;
+            *pScore += 400;
             break;
         case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:
-            score += 300;
+            *pScore += 300;
             break;
         case VK_PHYSICAL_DEVICE_TYPE_CPU:
-            score += 100;
+            *pScore += 100;
             break;
 		default:
 	        break;
@@ -447,15 +662,15 @@ VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceScore(
 
 VKAPI_ATTR VkResult VKAPI_CALL vuFindBestPhysicalDevice(
     VkInstance                                  instance,
-    VkPhysicalDevice&                           physicalDevice) {
+    VkPhysicalDevice*                           pPhysicalDevice) {
     // Initialize out paramters.
-    physicalDevice = VK_NULL_HANDLE;
+    *pPhysicalDevice = VK_NULL_HANDLE;
 
     // Find a best physical device.
     VkResult status;
 
     std::vector<VkPhysicalDevice> physicalDevices;
-    status = vuEnumeratePhysicalDevices(instance, physicalDevices);
+    status = vuEnumeratePhysicalDevices(instance, &physicalDevices);
 
     if (status != VK_SUCCESS && status != VK_INCOMPLETE)
         return status;
@@ -463,13 +678,49 @@ VKAPI_ATTR VkResult VKAPI_CALL vuFindBestPhysicalDevice(
     uint32_t maxScore = 0;
     for (auto i = 0; i != physicalDevices.size(); ++i) {
         uint32_t curScore;
-        vuGetPhysicalDeviceScore(physicalDevices[i], curScore);
+        vuGetPhysicalDeviceScore(physicalDevices[i], &curScore);
 
         if (curScore > maxScore) {
-            physicalDevice = physicalDevices[i];
+            *pPhysicalDevice = physicalDevices[i];
             maxScore = curScore;
         }
     }
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuFindQueueFamilyIndex(
+    VkPhysicalDevice                            physicalDevice,
+    VkQueueFlags                                queueFlags,
+    uint32_t*                                   pQueueFamilyIndex) {
+    // Initialize out paramters.
+    *pQueueFamilyIndex = UINT32_MAX;
+
+    // Find a queue fammily index.
+    VkResult status;
+
+    std::vector<VkQueueFamilyProperties> properties;
+    vuGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &properties);
+
+    for (auto i = 0; i != properties.size(); ++i) {
+        if (!properties[i].queueCount)
+            continue;
+
+        if (IsAllFlagsSet(properties[i].queueFlags, queueFlags)) {
+            *pQueueFamilyIndex = i;
+            break;
+        }
+
+        if (IsAnyFlagSet(properties[i].queueFlags, queueFlags))
+            *pQueueFamilyIndex = i;
+    }
+
+    if (*pQueueFamilyIndex != UINT32_MAX)
+        status = VK_SUCCESS;
+    else
+        status = VK_ERROR_INITIALIZATION_FAILED;
 
     return status;
 }
