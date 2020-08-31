@@ -5,10 +5,15 @@
 
 // clang-format off
 
-#include "vkut.h"
+#pragma warning(push)
+#pragma warning(disable : 26812)
+
+#include "extension.h"
 
 #include <glslang/SPIRV/GlslangToSpv.h>
 #include <fstream>
+
+#include "core.h"
 
 //-----------------------------------------------------------------------------
 
@@ -358,5 +363,7 @@ VKAPI_ATTR VkResult VKAPI_CALL vuCompileShader(
 }
 
 //-----------------------------------------------------------------------------
+
+#pragma warning(pop)
 
 // clang-format on

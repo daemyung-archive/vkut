@@ -22,14 +22,18 @@ find_package(glslang CONFIG REQUIRED)
 add_library(vkut
   STATIC
     include/vkut.h
-    source/vkut.cpp
+    include/vkut/core.h
+    include/vkut/extension.h
+    source/extension.cpp
 )
 
 #------------------------------------------------------------------------------
 
 target_include_directories(vkut
   PUBLIC
-    include/
+    include
+  PRIVATE
+    include/vkut
 )
 
 #------------------------------------------------------------------------------
