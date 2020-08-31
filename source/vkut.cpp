@@ -95,6 +95,90 @@ VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
 
 //-----------------------------------------------------------------------------
 
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
+    std::vector<VkExtensionProperties>*         pProperties) {
+    return vuEnumerateInstanceExtensionProperties(nullptr, pProperties);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
+    const char*                                 pLayerName,
+    std::vector<VkExtensionProperties>*         pProperties) {
+    // Initialize out paramters.
+    pProperties->clear();
+
+    // Enumerate all instance extension properties.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumerateInstanceExtensionProperties(pLayerName, &count, nullptr);
+
+    if (status != VK_SUCCESS)
+        return status;
+
+    pProperties->resize(count);
+    status = vkEnumerateInstanceExtensionProperties(pLayerName, &count, pProperties->data());
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
+    VkPhysicalDevice                            physicalDevice,
+    std::vector<VkExtensionProperties>*         pProperties) {
+    return vuEnumerateDeviceExtensionProperties(physicalDevice, nullptr, pProperties);
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
+    VkPhysicalDevice                            physicalDevice,
+    const char*                                 pLayerName,
+    std::vector<VkExtensionProperties>*         pProperties) {
+    // Initialize out paramters.
+    pProperties->clear();
+
+    // Enumerate all device extension properties.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, &count, nullptr);
+
+    if (status != VK_SUCCESS)
+        return status;
+
+    pProperties->resize(count);
+    status = vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, &count, pProperties->data());
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceLayerProperties(
+    std::vector<VkLayerProperties>*             pProperties) {
+    // Initialize out paramters.
+    pProperties->clear();
+
+    // Enumerate all instance layer properties.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumerateInstanceLayerProperties(&count, nullptr);
+
+    if (status != VK_SUCCESS)
+        return status;
+
+    pProperties->resize(count);
+    status = vkEnumerateInstanceLayerProperties(&count, pProperties->data());
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
     VkQueue                                     queue,
     const VkSubmitInfo*                         pSubmit,
@@ -718,6 +802,41 @@ VKAPI_ATTR VkResult VKAPI_CALL vuFindQueueFamilyIndex(
     }
 
     if (*pQueueFamilyIndex != UINT32_MAX)
+        status = VK_SUCCESS;
+    else
+        status = VK_ERROR_INITIALIZATION_FAILED;
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuFindMemoryTypeIndex(
+    VkPhysicalDevice                            physicalDevice,
+    const VkMemoryRequirements*                 pMemoryRequirements,
+    VkMemoryPropertyFlags                       memoryPropertyFlags,
+    uint32_t*                                   pMemoryTypeIndex) {
+    // Initialize out paramters.
+    *pMemoryTypeIndex = UINT32_MAX;
+
+    // Find a memory type index.
+    VkResult status;
+
+    VkPhysicalDeviceMemoryProperties properties;
+    vkGetPhysicalDeviceMemoryProperties(physicalDevice, &properties);
+
+    for (auto i = 0; i != properties.memoryTypeCount; ++i) {
+        if (!IsAllFlagsSet(pMemoryRequirements->memoryTypeBits, 1 << i))
+            continue;
+
+        auto& memory_type = properties.memoryTypes[i];
+        if (!IsAllFlagsSet(memory_type.propertyFlags, memoryPropertyFlags))
+            continue;
+
+        *pMemoryTypeIndex = i;
+    }
+
+    if (*pMemoryTypeIndex != UINT32_MAX)
         status = VK_SUCCESS;
     else
         status = VK_ERROR_INITIALIZATION_FAILED;

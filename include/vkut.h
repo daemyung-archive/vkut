@@ -17,23 +17,27 @@
 
 struct VuApplicationInfo : VkApplicationInfo {
     VuApplicationInfo() {
-        sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-        pNext = nullptr;
-        pApplicationName = nullptr;
-        applicationVersion = VK_MAKE_VERSION(0, 0, 0);
-        pEngineName = nullptr;
-        engineVersion = VK_MAKE_VERSION(0, 0, 0);
-        apiVersion = VK_API_VERSION_1_0;
+        this->sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+        this->pNext = nullptr;
+        this->pApplicationName = nullptr;
+        this->applicationVersion = VK_MAKE_VERSION(0, 0, 0);
+        this->pEngineName = nullptr;
+        this->engineVersion = VK_MAKE_VERSION(0, 0, 0);
+        this->apiVersion = VK_API_VERSION_1_0;
     }
 
-    void SetApplicationInfo(const char* pName, uint8_t major, uint32_t minor, uint32_t patch) {
-        pApplicationName = pName;
-        applicationVersion = VK_MAKE_VERSION(major, minor, patch);
+    VuApplicationInfo& SetApplicationInfo(const char* pName, uint8_t major, uint32_t minor, uint32_t patch) {
+        this->pApplicationName = pName;
+        this->applicationVersion = VK_MAKE_VERSION(major, minor, patch);
+
+        return *this;
     }
 
-    void SetEngineInfo(const char* pName, uint8_t major, uint32_t minor, uint32_t patch) {
-        pEngineName = pName;
-        engineVersion = VK_MAKE_VERSION(major, minor, patch);
+    VuApplicationInfo& SetEngineInfo(const char* pName, uint8_t major, uint32_t minor, uint32_t patch) {
+        this->pEngineName = pName;
+        this->engineVersion = VK_MAKE_VERSION(major, minor, patch);
+
+        return *this;
     }
 };
 
@@ -41,34 +45,51 @@ struct VuApplicationInfo : VkApplicationInfo {
 
 struct VuInstanceCreateInfo : VkInstanceCreateInfo {
     VuInstanceCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        pApplicationInfo = nullptr;
-        enabledLayerCount = 0;
-        ppEnabledLayerNames = nullptr;
-        enabledExtensionCount = 0;
-        ppEnabledExtensionNames = nullptr;
+        this->sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->pApplicationInfo = nullptr;
+        this->enabledLayerCount = 0;
+        this->ppEnabledLayerNames = nullptr;
+        this->enabledExtensionCount = 0;
+        this->ppEnabledExtensionNames = nullptr;
     }
 
-    void SetEnabledLayerName(const char** ppName) {
-        enabledLayerCount = 1;
-        ppEnabledLayerNames = ppName;
+    VuInstanceCreateInfo& SetEnabledLayerName(const char** ppName) {
+        this->enabledLayerCount = 1;
+        this->ppEnabledLayerNames = ppName;
+
+        return *this;
     }
 
-    void SetEnabledLayerNames(const std::vector<const char*>* pNames) {
-        enabledLayerCount = static_cast<uint32_t>(pNames->size());
-        ppEnabledLayerNames = pNames->data();
+    VuInstanceCreateInfo& SetEnabledLayerNames(const std::vector<const char*>* pNames) {
+        this->enabledLayerCount = static_cast<uint32_t>(pNames->size());
+        this->ppEnabledLayerNames = pNames->data();
+
+        return *this;
     }
 
-    void SetEnabledExtensionName(const char** ppName) {
-        enabledExtensionCount = 1;
-        ppEnabledExtensionNames = ppName;
+    VuInstanceCreateInfo& SetEnabledExtensionName(const char** ppName) {
+        this->enabledExtensionCount = 1;
+        this->ppEnabledExtensionNames = ppName;
+
+        return *this;
     }
 
-    void SetEnabledExtensionNames(const std::vector<const char*>* pNames) {
-        enabledExtensionCount = static_cast<uint32_t>(pNames->size());
-        ppEnabledExtensionNames = pNames->data();
+    VuInstanceCreateInfo& SetEnabledExtensionNames(const std::vector<const char*>* pNames) {
+        this->enabledExtensionCount = static_cast<uint32_t>(pNames->size());
+        this->ppEnabledExtensionNames = pNames->data();
+
+        return *this;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuExtent2D : VkExtent2D {
+    VuExtent2D() {
+        this->width = 0;
+        this->height = 0;
     }
 };
 
@@ -76,9 +97,9 @@ struct VuInstanceCreateInfo : VkInstanceCreateInfo {
 
 struct VuExtent3D : VkExtent3D {
     VuExtent3D() {
-        width = 0;
-        height = 0;
-        depth = 0;
+        this->width = 0;
+        this->height = 0;
+        this->depth = 0;
     }
 };
 
@@ -86,17 +107,25 @@ struct VuExtent3D : VkExtent3D {
 
 struct VuDeviceQueueCreateInfo : VkDeviceQueueCreateInfo {
     VuDeviceQueueCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        queueFamilyIndex = 0;
-        queueCount = 0;
-        pQueuePriorities = nullptr;
+        this->sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->queueFamilyIndex = 0;
+        this->queueCount = 0;
+        this->pQueuePriorities = nullptr;
     }
 
-    void SetQueueInfo(uint32_t count, const float* pPriorities) {
-        queueCount = count;
-        pQueuePriorities = pPriorities;
+    VuDeviceQueueCreateInfo& SetQueueFamilyIndex(uint32_t familyIndex) {
+        this->queueFamilyIndex = familyIndex;
+
+        return *this;
+    }
+
+    VuDeviceQueueCreateInfo& SetQueueInfo(uint32_t count, const float* pPriorities) {
+        this->queueCount = count;
+        this->pQueuePriorities = pPriorities;
+
+        return *this;
     }
 };
 
@@ -104,36 +133,44 @@ struct VuDeviceQueueCreateInfo : VkDeviceQueueCreateInfo {
 
 struct VuDeviceCreateInfo : VkDeviceCreateInfo {
     VuDeviceCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        queueCreateInfoCount = 0;
-        pQueueCreateInfos = nullptr;
-        enabledLayerCount = 0;
-        ppEnabledLayerNames = nullptr;
-        enabledExtensionCount = 0;
-        ppEnabledExtensionNames = nullptr;
-        pEnabledFeatures = nullptr;
+        this->sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->queueCreateInfoCount = 0;
+        this->pQueueCreateInfos = nullptr;
+        this->enabledLayerCount = 0;
+        this->ppEnabledLayerNames = nullptr;
+        this->enabledExtensionCount = 0;
+        this->ppEnabledExtensionNames = nullptr;
+        this->pEnabledFeatures = nullptr;
     }
 
-    void SetQueueCreateInfo(const VkDeviceQueueCreateInfo* pCreateInfo) {
-        queueCreateInfoCount = 1;
-        pQueueCreateInfos = pCreateInfo;
+    VuDeviceCreateInfo& SetQueueCreateInfo(const VkDeviceQueueCreateInfo* pCreateInfo) {
+        this->queueCreateInfoCount = 1;
+        this->pQueueCreateInfos = pCreateInfo;
+
+        return *this;
     }
 
-    void SetQueueCreateInfos(const std::vector<VkDeviceQueueCreateInfo>* pCreateInfos) {
-        queueCreateInfoCount = static_cast<uint32_t>(pCreateInfos->size());
-        pQueueCreateInfos = pCreateInfos->data();
+    VuDeviceCreateInfo& SetQueueCreateInfos(const std::vector<VkDeviceQueueCreateInfo>* pCreateInfos) {
+        this->queueCreateInfoCount = static_cast<uint32_t>(pCreateInfos->size());
+        this->pQueueCreateInfos = pCreateInfos->data();
+
+        return *this;
     }
 
-    void SetEnabledExtensionName(const char** ppName) {
-        enabledExtensionCount = 1;
-        ppEnabledExtensionNames = ppName;
+    VuDeviceCreateInfo& SetEnabledExtensionName(const char** ppName) {
+        this->enabledExtensionCount = 1;
+        this->ppEnabledExtensionNames = ppName;
+
+        return *this;
     }
 
-    void SetEnabledExtensionNames(const std::vector<const char*>* pNames) {
-        enabledExtensionCount = static_cast<uint32_t>(pNames->size());
-        ppEnabledExtensionNames = pNames->data();
+    VuDeviceCreateInfo& SetEnabledExtensionNames(const std::vector<const char*>* pNames) {
+        this->enabledExtensionCount = static_cast<uint32_t>(pNames->size());
+        this->ppEnabledExtensionNames = pNames->data();
+
+        return *this;
     }
 };
 
@@ -141,20 +178,22 @@ struct VuDeviceCreateInfo : VkDeviceCreateInfo {
 
 struct VuSubmitInfo : VkSubmitInfo {
     VuSubmitInfo() {
-        sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        pNext = nullptr;
-        waitSemaphoreCount = 0;
-        pWaitSemaphores = nullptr;
-        pWaitDstStageMask = nullptr;
-        commandBufferCount = 0;
-        pCommandBuffers = nullptr;
-        signalSemaphoreCount = 0;
-        pSignalSemaphores = nullptr;
+        this->sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        this->pNext = nullptr;
+        this->waitSemaphoreCount = 0;
+        this->pWaitSemaphores = nullptr;
+        this->pWaitDstStageMask = nullptr;
+        this->commandBufferCount = 0;
+        this->pCommandBuffers = nullptr;
+        this->signalSemaphoreCount = 0;
+        this->pSignalSemaphores = nullptr;
     }
 
-    void SetCommandBuffer(const VkCommandBuffer* pCommandBuffer) {
-        commandBufferCount = 1;
-        pCommandBuffers = pCommandBuffer;
+    VuSubmitInfo& SetCommandBuffer(const VkCommandBuffer* pCommandBuffer) {
+        this->commandBufferCount = 1;
+        this->pCommandBuffers = pCommandBuffer;
+
+        return *this;
     }
 };
 
@@ -162,10 +201,22 @@ struct VuSubmitInfo : VkSubmitInfo {
 
 struct VuMemoryAllocateInfo : VkMemoryAllocateInfo {
     VuMemoryAllocateInfo() {
-        sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-        pNext = nullptr;
-        allocationSize = 0;
-        memoryTypeIndex = 0;
+        this->sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+        this->pNext = nullptr;
+        this->allocationSize = 0;
+        this->memoryTypeIndex = 0;
+    }
+
+    VuMemoryAllocateInfo& SetAllocationSize(VkDeviceSize allocationSize) {
+        this->allocationSize = allocationSize;
+
+        return *this;
+    }
+
+    VuMemoryAllocateInfo& SetMemoryTypeIndex(uint32_t memoryTypeIndex) {
+        this->memoryTypeIndex = memoryTypeIndex;
+
+        return *this;
     }
 };
 
@@ -173,11 +224,11 @@ struct VuMemoryAllocateInfo : VkMemoryAllocateInfo {
 
 struct VuMappedMemoryRange : VkMappedMemoryRange {
     VuMappedMemoryRange() {
-        sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
-        pNext = nullptr;
-        memory = VK_NULL_HANDLE;
-        offset = 0;
-        size = 0;
+        this->sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+        this->pNext = nullptr;
+        this->memory = VK_NULL_HANDLE;
+        this->offset = 0;
+        this->size = 0;
     }
 };
 
@@ -185,18 +236,18 @@ struct VuMappedMemoryRange : VkMappedMemoryRange {
 
 struct VuBindSparseInfo : VkBindSparseInfo {
     VuBindSparseInfo() {
-        sType = VK_STRUCTURE_TYPE_BIND_SPARSE_INFO;
-        pNext = nullptr;
-        waitSemaphoreCount = 0;
-        pWaitSemaphores = nullptr;
-        bufferBindCount = 0;
-        pBufferBinds = nullptr;
-        imageOpaqueBindCount = 0;
-        pImageOpaqueBinds = nullptr;
-        imageBindCount = 0;
-        pImageBinds = nullptr;
-        signalSemaphoreCount = 0;
-        pSignalSemaphores = nullptr;
+        this->sType = VK_STRUCTURE_TYPE_BIND_SPARSE_INFO;
+        this->pNext = nullptr;
+        this->waitSemaphoreCount = 0;
+        this->pWaitSemaphores = nullptr;
+        this->bufferBindCount = 0;
+        this->pBufferBinds = nullptr;
+        this->imageOpaqueBindCount = 0;
+        this->pImageOpaqueBinds = nullptr;
+        this->imageBindCount = 0;
+        this->pImageBinds = nullptr;
+        this->signalSemaphoreCount = 0;
+        this->pSignalSemaphores = nullptr;
     }
 };
 
@@ -204,9 +255,9 @@ struct VuBindSparseInfo : VkBindSparseInfo {
 
 struct VuFenceCreateInfo : VkFenceCreateInfo {
     VuFenceCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
+        this->sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
     }
 };
 
@@ -214,9 +265,9 @@ struct VuFenceCreateInfo : VkFenceCreateInfo {
 
 struct VuSemaphoreCreateInfo : VkSemaphoreCreateInfo {
     VuSemaphoreCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
+        this->sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
     }
 };
 
@@ -224,9 +275,9 @@ struct VuSemaphoreCreateInfo : VkSemaphoreCreateInfo {
 
 struct VuEventCreateInfo : VkEventCreateInfo {
     VuEventCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_EVENT_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
+        this->sType = VK_STRUCTURE_TYPE_EVENT_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
     }
 };
 
@@ -234,12 +285,12 @@ struct VuEventCreateInfo : VkEventCreateInfo {
 
 struct VuQueryPoolCreateInfo : VkQueryPoolCreateInfo {
     VuQueryPoolCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_QUERY_POOL_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        queryType = VK_QUERY_TYPE_OCCLUSION;
-        queryCount = 0;
-        pipelineStatistics = 0;
+        this->sType = VK_STRUCTURE_TYPE_QUERY_POOL_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->queryType = VK_QUERY_TYPE_OCCLUSION;
+        this->queryCount = 0;
+        this->pipelineStatistics = 0;
     }
 };
 
@@ -247,14 +298,26 @@ struct VuQueryPoolCreateInfo : VkQueryPoolCreateInfo {
 
 struct VuBufferCreateInfo : VkBufferCreateInfo {
     VuBufferCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        size = 0;
-        usage = 0;
-        sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-        queueFamilyIndexCount = 0;
-        pQueueFamilyIndices = nullptr;
+        this->sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->size = 0;
+        this->usage = 0;
+        this->sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        this->queueFamilyIndexCount = 0;
+        this->pQueueFamilyIndices = nullptr;
+    }
+
+    VuBufferCreateInfo& SetSize(VkDeviceSize size) {
+        this->size = size;
+
+        return *this;
+    }
+
+    VuBufferCreateInfo& SetUsage(VkBufferUsageFlags usage) {
+        this->usage = usage;
+
+        return *this;
     }
 };
 
@@ -262,13 +325,13 @@ struct VuBufferCreateInfo : VkBufferCreateInfo {
 
 struct VuBufferViewCreateInfo : VkBufferViewCreateInfo {
     VuBufferViewCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_BUFFER_VIEW_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        buffer = VK_NULL_HANDLE;
-        format = VK_FORMAT_UNDEFINED;
-        offset = 0;
-        range = 0;
+        this->sType = VK_STRUCTURE_TYPE_BUFFER_VIEW_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->buffer = VK_NULL_HANDLE;
+        this->format = VK_FORMAT_UNDEFINED;
+        this->offset = 0;
+        this->range = 0;
     }
 };
 
@@ -276,20 +339,20 @@ struct VuBufferViewCreateInfo : VkBufferViewCreateInfo {
 
 struct VuImageCreateInfo : VkImageCreateInfo {
     VuImageCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        imageType = VK_IMAGE_TYPE_1D;
-        format = VK_FORMAT_UNDEFINED;
-        extent = VuExtent3D();
-        mipLevels = 1;
-        arrayLayers = 1;
-        samples = VK_SAMPLE_COUNT_1_BIT;
-        usage = 0;
-        sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-        queueFamilyIndexCount = 0;
-        pQueueFamilyIndices = nullptr;
-        initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        this->sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->imageType = VK_IMAGE_TYPE_1D;
+        this->format = VK_FORMAT_UNDEFINED;
+        this->extent = VuExtent3D();
+        this->mipLevels = 1;
+        this->arrayLayers = 1;
+        this->samples = VK_SAMPLE_COUNT_1_BIT;
+        this->usage = 0;
+        this->sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        this->queueFamilyIndexCount = 0;
+        this->pQueueFamilyIndices = nullptr;
+        this->initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     }
 };
 
@@ -297,10 +360,10 @@ struct VuImageCreateInfo : VkImageCreateInfo {
 
 struct VuComponentMapping : VkComponentMapping {
     VuComponentMapping() {
-        r = VK_COMPONENT_SWIZZLE_IDENTITY;
-        g = VK_COMPONENT_SWIZZLE_IDENTITY;
-        b = VK_COMPONENT_SWIZZLE_IDENTITY;
-        a = VK_COMPONENT_SWIZZLE_IDENTITY;
+        this->r = VK_COMPONENT_SWIZZLE_IDENTITY;
+        this->g = VK_COMPONENT_SWIZZLE_IDENTITY;
+        this->b = VK_COMPONENT_SWIZZLE_IDENTITY;
+        this->a = VK_COMPONENT_SWIZZLE_IDENTITY;
     }
 };
 
@@ -308,11 +371,11 @@ struct VuComponentMapping : VkComponentMapping {
 
 struct VuImageSubresourceRange : VkImageSubresourceRange {
     VuImageSubresourceRange() {
-        aspectMask = 0;
-        baseMipLevel = 0;
-        levelCount = 0;
-        baseArrayLayer = 0;
-        layerCount = 0;
+        this->aspectMask = 0;
+        this->baseMipLevel = 0;
+        this->levelCount = 0;
+        this->baseArrayLayer = 0;
+        this->layerCount = 0;
     }
 };
 
@@ -320,14 +383,14 @@ struct VuImageSubresourceRange : VkImageSubresourceRange {
 
 struct VuImageViewCreateInfo : VkImageViewCreateInfo {
     VuImageViewCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        image = VK_NULL_HANDLE;
-        viewType = VK_IMAGE_VIEW_TYPE_1D;
-        format = VK_FORMAT_UNDEFINED;
-        components = VuComponentMapping();
-        subresourceRange = VuImageSubresourceRange();
+        this->sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->image = VK_NULL_HANDLE;
+        this->viewType = VK_IMAGE_VIEW_TYPE_1D;
+        this->format = VK_FORMAT_UNDEFINED;
+        this->components = VuComponentMapping();
+        this->subresourceRange = VuImageSubresourceRange();
     }
 };
 
@@ -335,10 +398,22 @@ struct VuImageViewCreateInfo : VkImageViewCreateInfo {
 
 struct VuCommandPoolCreateInfo : VkCommandPoolCreateInfo {
     VuCommandPoolCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        queueFamilyIndex = 0;
+        this->sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->queueFamilyIndex = 0;
+    }
+
+    VuCommandPoolCreateInfo& SetFlags(VkCommandPoolCreateFlags flags) {
+        this->flags = flags;
+
+        return *this;
+    }
+
+    VuCommandPoolCreateInfo& SetQueueFamilyIndex(uint32_t queueFamilyIndex) {
+        this->queueFamilyIndex = queueFamilyIndex;
+
+        return *this;
     }
 };
 
@@ -346,11 +421,24 @@ struct VuCommandPoolCreateInfo : VkCommandPoolCreateInfo {
 
 struct VuCommandBufferAllocateInfo : VkCommandBufferAllocateInfo {
     VuCommandBufferAllocateInfo() {
-        sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        pNext = nullptr;
-        commandPool = VK_NULL_HANDLE;
-        level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        commandBufferCount = 0;
+        this->sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        this->pNext = nullptr;
+        this->commandPool = VK_NULL_HANDLE;
+        this->level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        this->commandBufferCount = 0;
+    }
+
+    VuCommandBufferAllocateInfo& SetCommandPool(VkCommandPool commandPool) {
+        this->commandPool = commandPool;
+
+        return *this;
+    }
+
+    VuCommandBufferAllocateInfo& SetCommandBufferInfo(VkCommandBufferLevel level, uint32_t count) {
+        this->level = level;
+        this->commandBufferCount = count;
+
+        return *this;
     }
 };
 
@@ -358,10 +446,10 @@ struct VuCommandBufferAllocateInfo : VkCommandBufferAllocateInfo {
 
 struct VuCommandBufferBeginInfo : VkCommandBufferBeginInfo {
     VuCommandBufferBeginInfo() {
-        sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        pNext = nullptr;
-        flags = 0;
-        pInheritanceInfo = nullptr;
+        this->sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->pInheritanceInfo = nullptr;
     }
 };
 
@@ -369,21 +457,23 @@ struct VuCommandBufferBeginInfo : VkCommandBufferBeginInfo {
 
 struct VuImageMemoryBarrier : VkImageMemoryBarrier {
     VuImageMemoryBarrier() {
-        sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-        pNext = nullptr;
-        srcAccessMask = 0;
-        dstAccessMask = 0;
-        oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        newLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        srcQueueFamilyIndex = 0;
-        dstQueueFamilyIndex = 0;
-        image = VK_NULL_HANDLE;
-        subresourceRange = VuImageSubresourceRange();
+        this->sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        this->pNext = nullptr;
+        this->srcAccessMask = 0;
+        this->dstAccessMask = 0;
+        this->oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        this->newLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        this->srcQueueFamilyIndex = 0;
+        this->dstQueueFamilyIndex = 0;
+        this->image = VK_NULL_HANDLE;
+        this->subresourceRange = VuImageSubresourceRange();
     }
 
-    void SetQueueFamilyIndex(uint32_t queueFamilyIndex) {
-        srcQueueFamilyIndex = queueFamilyIndex;
-        dstQueueFamilyIndex = queueFamilyIndex;
+    VuImageMemoryBarrier& SetQueueFamilyIndex(uint32_t queueFamilyIndex) {
+        this->srcQueueFamilyIndex = queueFamilyIndex;
+        this->dstQueueFamilyIndex = queueFamilyIndex;
+
+        return *this;
     }
 };
 
@@ -391,27 +481,95 @@ struct VuImageMemoryBarrier : VkImageMemoryBarrier {
 
 struct VuSamplerCreateInfo : VkSamplerCreateInfo {
     VuSamplerCreateInfo() {
-        sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-        pNext = nullptr;
-        flags = 0;
-        magFilter = VK_FILTER_NEAREST;
-        minFilter = VK_FILTER_NEAREST;
-        mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
-        addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        mipLodBias = 0.0f;
-        anisotropyEnable = VK_FALSE;
-        maxAnisotropy = 0.0f;
-        compareEnable = VK_FALSE;
-        compareOp = VK_COMPARE_OP_NEVER;
-        minLod = 0.0f;
-        maxLod = 0.0f;
-        borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
-        unnormalizedCoordinates = VK_FALSE;
+        this->sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->magFilter = VK_FILTER_NEAREST;
+        this->minFilter = VK_FILTER_NEAREST;
+        this->mipmapMode = VK_SAMPLER_MIPMAP_MODE_NEAREST;
+        this->addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        this->addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        this->addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        this->mipLodBias = 0.0f;
+        this->anisotropyEnable = VK_FALSE;
+        this->maxAnisotropy = 0.0f;
+        this->compareEnable = VK_FALSE;
+        this->compareOp = VK_COMPARE_OP_NEVER;
+        this->minLod = 0.0f;
+        this->maxLod = 0.0f;
+        this->borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
+        this->unnormalizedCoordinates = VK_FALSE;
     }
 };
 
+//-----------------------------------------------------------------------------
+
+struct VuSwapchainCreateInfo : VkSwapchainCreateInfoKHR {
+    VuSwapchainCreateInfo() {
+        this->sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->surface = VK_NULL_HANDLE;
+        this->minImageCount = 0;
+        this->imageFormat = VK_FORMAT_UNDEFINED;
+        this->imageColorSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+        this->imageExtent = VuExtent2D();
+        this->imageArrayLayers = 1;
+        this->imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        this->imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        this->queueFamilyIndexCount = 0;
+        this->pQueueFamilyIndices = nullptr;
+        this->preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR;
+        this->compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+        this->presentMode = VK_PRESENT_MODE_FIFO_KHR;
+        this->clipped = VK_TRUE;
+        this->oldSwapchain = VK_NULL_HANDLE;
+    }
+
+    VuSwapchainCreateInfo& SetSurface(VkSurfaceKHR surface) {
+        this->surface = surface;
+
+        return *this;
+    }
+
+    VuSwapchainCreateInfo& SetMinImageCount(uint32_t minImageCount) {
+        this->minImageCount = minImageCount;
+
+        return *this;
+    }
+
+    VuSwapchainCreateInfo& SetImageFormat(VkFormat imageFormat) {
+        this->imageFormat = imageFormat;
+
+        return *this;
+    }
+
+    VuSwapchainCreateInfo& SetImageExtent(uint32_t width, uint32_t height) {
+        this->imageExtent.width = width;
+        this->imageExtent.height = height;
+
+        return *this;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+#ifdef VK_USE_PLATFORM_MACOS_MVK
+struct VuMacOSSurfaceCreateInfo : VkMacOSSurfaceCreateInfoMVK {
+    VuMacOSSurfaceCreateInfo() {
+        this->sType = VK_STRUCTURE_TYPE_MACOS_SURFACE_CREATE_INFO_MVK;
+        this->pNext = nullptr;
+        this->flags = 0;
+        this->pView = nullptr;
+    }
+
+    VuMacOSSurfaceCreateInfo& SetView(void* pView) {
+        this->pView = pView;
+
+        return *this;
+    }
+};
+#endif
 
 //-----------------------------------------------------------------------------
 
@@ -447,6 +605,35 @@ VKAPI_ATTR VkResult VKAPI_CALL vuCreateDevice(
 
 VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
     VkDevice                                    device);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
+    std::vector<VkExtensionProperties>*         pProperties);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
+    const char*                                 pLayerName,
+    std::vector<VkExtensionProperties>*         pProperties);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
+    VkPhysicalDevice                            physicalDevice,
+    std::vector<VkExtensionProperties>*         pProperties);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
+    VkPhysicalDevice                            physicalDevice,
+    const char*                                 pLayerName,
+    std::vector<VkExtensionProperties>*         pProperties);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceLayerProperties(
+    std::vector<VkLayerProperties>*             pProperties);
 
 //-----------------------------------------------------------------------------
 
@@ -869,6 +1056,58 @@ VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
 
 //-----------------------------------------------------------------------------
 
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateSwapchain(
+    VkDevice                                    device,
+    const VkSwapchainCreateInfoKHR*             pCreateInfo,
+    VkSwapchainKHR*                             pSwapchain) {
+    return vkCreateSwapchainKHR(device, pCreateInfo, nullptr, pSwapchain);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroySwapchain(
+    VkDevice                                    device,
+    VkSwapchainKHR                              swapchain) {
+    vkDestroySwapchainKHR(device, swapchain, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuGetSwapchainImages(
+    VkDevice                                    device,
+    VkSwapchainKHR                              swapchain,
+    std::vector<VkImage>*                       pSwapchainImages) {
+    // Initialize out parameters.
+    pSwapchainImages->clear();
+
+    // Get all swapchain images.
+    VkResult status;
+
+    uint32_t count;
+    status = vkGetSwapchainImagesKHR(device, swapchain, &count, nullptr);
+
+    if (status != VK_SUCCESS)
+        return status;
+
+    pSwapchainImages->resize(count);
+    status = vkGetSwapchainImagesKHR(device, swapchain, &count, pSwapchainImages->data());
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+#ifdef VK_USE_PLATFORM_MACOS_MVK
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateMacOSSurface(
+    VkInstance                                  instance,
+    const VkMacOSSurfaceCreateInfoMVK*          pCreateInfo,
+    VkSurfaceKHR*                               pSurface) {
+    return vkCreateMacOSSurfaceMVK(instance, pCreateInfo, nullptr, pSurface);
+}
+#endif
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceScore(
     VkPhysicalDevice                            physicalDevice,
     uint32_t*                                   pScore);
@@ -885,6 +1124,14 @@ VKAPI_ATTR VkResult VKAPI_CALL vuFindQueueFamilyIndex(
     VkPhysicalDevice                            physicalDevice,
     VkQueueFlags                                queueFlags,
     uint32_t*                                   pQueueFamilyIndex);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuFindMemoryTypeIndex(
+    VkPhysicalDevice                            physicalDevice,
+    const VkMemoryRequirements*                 pMemoryRequirements,
+    VkMemoryPropertyFlags                       memoryPropertyFlags,
+    uint32_t*                                   pMemoryTypeIndex);
 
 //-----------------------------------------------------------------------------
 
