@@ -189,9 +189,24 @@ struct VuSubmitInfo : VkSubmitInfo {
         this->pSignalSemaphores = nullptr;
     }
 
+    VuSubmitInfo& SetWaitSemaphore(const VkSemaphore* pWaitSemaphore, const VkPipelineStageFlags* pWaitDstStageMask ) {
+        this->waitSemaphoreCount = 1;
+        this->pWaitSemaphores = pWaitSemaphore;
+        this->pWaitDstStageMask = pWaitDstStageMask;
+
+        return *this;
+    }
+
     VuSubmitInfo& SetCommandBuffer(const VkCommandBuffer* pCommandBuffer) {
         this->commandBufferCount = 1;
         this->pCommandBuffers = pCommandBuffer;
+
+        return *this;
+    }
+
+    VuSubmitInfo& SetSignalSemaphore(const VkSemaphore* pSignalSemaphore) {
+        this->signalSemaphoreCount = 1;
+        this->pSignalSemaphores = pSignalSemaphore;
 
         return *this;
     }
@@ -258,6 +273,12 @@ struct VuFenceCreateInfo : VkFenceCreateInfo {
         this->sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         this->pNext = nullptr;
         this->flags = 0;
+    }
+
+    VuFenceCreateInfo& SetFlags(VkFenceCreateFlags flags) {
+        this->flags = flags;
+
+        return *this;
     }
 };
 
@@ -354,6 +375,32 @@ struct VuImageCreateInfo : VkImageCreateInfo {
         this->pQueueFamilyIndices = nullptr;
         this->initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     }
+
+    VuImageCreateInfo& SetImageType(VkImageType imageType) {
+        this->imageType = imageType;
+
+        return *this;
+    }
+
+    VuImageCreateInfo& SetFormat(VkFormat format) {
+        this->format = format;
+
+        return *this;
+    }
+
+    VuImageCreateInfo& SetExtent(uint32_t width, uint32_t height) {
+        this->extent.width = width;
+        this->extent.height = height;
+        this->extent.depth = 1;
+
+        return *this;
+    }
+
+    VuImageCreateInfo& SetUsage(VkImageUsageFlags usage) {
+        this->usage = usage;
+
+        return *this;
+    }
 };
 
 //-----------------------------------------------------------------------------
@@ -373,9 +420,39 @@ struct VuImageSubresourceRange : VkImageSubresourceRange {
     VuImageSubresourceRange() {
         this->aspectMask = 0;
         this->baseMipLevel = 0;
-        this->levelCount = 0;
+        this->levelCount = 1;
         this->baseArrayLayer = 0;
-        this->layerCount = 0;
+        this->layerCount = 1;
+    }
+
+    VuImageSubresourceRange& SetAspectMask(VkImageAspectFlags aspectMask) {
+        this->aspectMask = aspectMask;
+
+        return *this;
+    }
+
+    VuImageSubresourceRange& SetBaseMipLevel(uint32_t baseMipLevel) {
+        this->baseMipLevel = baseMipLevel;
+
+        return *this;
+    }
+
+    VuImageSubresourceRange& SetLevelCount(uint32_t levelCount) {
+        this->levelCount = levelCount;
+
+        return *this;
+    }
+
+    VuImageSubresourceRange& SetBaseArrayLayer(uint32_t baseArrayLayer) {
+        this->baseArrayLayer = baseArrayLayer;
+
+        return *this;
+    }
+
+    VuImageSubresourceRange& SetLayerCount(uint32_t layerCount) {
+        this->layerCount = layerCount;
+
+        return *this;
     }
 };
 
@@ -391,6 +468,24 @@ struct VuImageViewCreateInfo : VkImageViewCreateInfo {
         this->format = VK_FORMAT_UNDEFINED;
         this->components = VuComponentMapping();
         this->subresourceRange = VuImageSubresourceRange();
+    }
+
+    VuImageViewCreateInfo& SetImage(VkImage image) {
+        this->image = image;
+
+        return *this;
+    }
+
+    VuImageViewCreateInfo& SetViewType(VkImageViewType viewType) {
+        this->viewType = viewType;
+
+        return *this;
+    }
+
+    VuImageViewCreateInfo& SetFormat(VkFormat format) {
+        this->format = format;
+
+        return *this;
     }
 };
 
@@ -469,9 +564,29 @@ struct VuImageMemoryBarrier : VkImageMemoryBarrier {
         this->subresourceRange = VuImageSubresourceRange();
     }
 
+    VuImageMemoryBarrier& SetAccessMask(VkAccessFlags srcAccessMask, VkAccessFlags dstAccessMask) {
+        this->srcAccessMask = srcAccessMask;
+        this->dstAccessMask = dstAccessMask;
+
+        return *this;
+    }
+
+    VuImageMemoryBarrier& SetImageLayout(VkImageLayout oldLayout, VkImageLayout newLayout) {
+        this->oldLayout = oldLayout;
+        this->newLayout = newLayout;
+
+        return *this;
+    }
+
     VuImageMemoryBarrier& SetQueueFamilyIndex(uint32_t queueFamilyIndex) {
         this->srcQueueFamilyIndex = queueFamilyIndex;
         this->dstQueueFamilyIndex = queueFamilyIndex;
+
+        return *this;
+    }
+
+    VuImageMemoryBarrier& SetImage(VkImage image) {
+        this->image = image;
 
         return *this;
     }
@@ -547,6 +662,36 @@ struct VuSwapchainCreateInfo : VkSwapchainCreateInfoKHR {
     VuSwapchainCreateInfo& SetImageExtent(uint32_t width, uint32_t height) {
         this->imageExtent.width = width;
         this->imageExtent.height = height;
+
+        return *this;
+    }
+};
+
+//-----------------------------------------------------------------------------
+
+struct VuPresentInfo : VkPresentInfoKHR {
+    VuPresentInfo() {
+        this->sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+        this->pNext = nullptr;
+        this->waitSemaphoreCount = 0;
+        this->pWaitSemaphores = nullptr;
+        this->swapchainCount = 0;
+        this->pSwapchains = nullptr;
+        this->pImageIndices = nullptr;
+        this->pResults = nullptr;
+    }
+
+    VuPresentInfo& SetWaitSemaphore(const VkSemaphore* pWaitSemaphore) {
+        this->waitSemaphoreCount = 1;
+        this->pWaitSemaphores = pWaitSemaphore;
+
+        return *this;
+    }
+
+    VuPresentInfo& SetSwapchainInfo(const VkSwapchainKHR* pSwapchain, const uint32_t* pImageIndex) {
+        this->swapchainCount = 1;
+        this->pSwapchains = pSwapchain;
+        this->pImageIndices = pImageIndex;
 
         return *this;
     }
@@ -695,6 +840,21 @@ VKAPI_ATTR VkResult VKAPI_CALL vuCreateFence(
 VKAPI_ATTR void VKAPI_CALL vuDestroyFence(
     VkDevice                                    device,
     VkFence                                     fence);
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuResetFence(
+    VkDevice                                    device,
+    const VkFence*                              pFence) {
+    return vkResetFences(device, 1, pFence);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuWaitForFence(
+    VkDevice                                    device,
+    const VkFence*                              pFence,
+    uint64_t                                    timeout) {
+    return vkWaitForFences(device, 1, pFence, VK_FALSE, timeout);
+}
 
 //-----------------------------------------------------------------------------
 
@@ -944,6 +1104,13 @@ VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffers(
 
 //-----------------------------------------------------------------------------
 
+inline VKAPI_ATTR VkResult VKAPI_CALL vuResetCommandBuffer(
+    VkCommandBuffer                             commandBuffer) {
+    vkResetCommandBuffer(commandBuffer, 0);
+}
+
+//-----------------------------------------------------------------------------
+
 VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
     VkCommandBuffer                             commandBuffer,
     VkBuffer                                    srcBuffer,
@@ -1132,6 +1299,24 @@ VKAPI_ATTR VkResult VKAPI_CALL vuFindMemoryTypeIndex(
     const VkMemoryRequirements*                 pMemoryRequirements,
     VkMemoryPropertyFlags                       memoryPropertyFlags,
     uint32_t*                                   pMemoryTypeIndex);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuCompileShader(
+    const std::string*                          pContents,
+    const char*                                 pDefines,
+    const char*                                 pEntryPoint,
+    VkShaderStageFlagBits                       stage,
+    std::vector<uint32_t>*                      pCode);
+
+//-----------------------------------------------------------------------------
+
+VKAPI_ATTR VkResult VKAPI_CALL vuCompileShader(
+    const char*                                 pFileName,
+    const char*                                 pDefines,
+    const char*                                 pEntryPoint,
+    VkShaderStageFlagBits                       stage,
+    std::vector<uint32_t>*                      pCode);
 
 //-----------------------------------------------------------------------------
 
