@@ -718,508 +718,692 @@ struct VuMacOSSurfaceCreateInfo : VkMacOSSurfaceCreateInfoMVK {
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateInstance(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateInstance(
     const VkInstanceCreateInfo*                 pCreateInfo,
-    VkInstance*                                 pInstance);
+    VkInstance*                                 pInstance) {
+    return vkCreateInstance(pCreateInfo, nullptr, pInstance);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyInstance(
-    VkInstance                                  instance);
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyInstance(
+    VkInstance                                  instance) {
+    vkDestroyInstance(instance, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuEnumeratePhysicalDevices(
     VkInstance                                  instance,
-    std::vector<VkPhysicalDevice>*              pPhysicalDevices);
+    std::vector<VkPhysicalDevice>*              pPhysicalDevices) {
+    // Initialize out parameters.
+    pPhysicalDevices->clear();
+
+    // Enumerate all physical devices.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumeratePhysicalDevices(instance, &count, nullptr);
+
+    if (status != VK_SUCCESS && status != VK_INCOMPLETE)
+        return status;
+
+    pPhysicalDevices->resize(count);
+    status = vkEnumeratePhysicalDevices(instance, &count, pPhysicalDevices->data());
+
+    return status;
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceQueueFamilyProperties(
+inline VKAPI_ATTR void VKAPI_CALL vuGetPhysicalDeviceQueueFamilyProperties(
     VkPhysicalDevice                            physicalDevice,
-    std::vector<VkQueueFamilyProperties>*       pQueueFamilyProperties);
+    std::vector<VkQueueFamilyProperties>*       pQueueFamilyProperties) {
+    // Initialize out parameters.
+    pQueueFamilyProperties->clear();
+
+    // Get all queue family properties.
+    uint32_t count;
+    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, nullptr);
+
+    pQueueFamilyProperties->resize(count);
+    vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &count, pQueueFamilyProperties->data());
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateDevice(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateDevice(
     VkPhysicalDevice                            physicalDevice,
     const VkDeviceCreateInfo*                   pCreateInfo,
-    VkDevice*                                   pDevice);
+    VkDevice*                                   pDevice) {
+    return vkCreateDevice(physicalDevice, pCreateInfo, nullptr, pDevice);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
-    VkDevice                                    device);
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyDevice(
+    VkDevice                                    device) {
+    vkDestroyDevice(device, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
-    std::vector<VkExtensionProperties>*         pProperties);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
     const char*                                 pLayerName,
-    std::vector<VkExtensionProperties>*         pProperties);
+    std::vector<VkExtensionProperties>*         pProperties) {
+    // Initialize out paramters.
+    pProperties->clear();
+
+    // Enumerate all instance extension properties.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumerateInstanceExtensionProperties(pLayerName, &count, nullptr);
+
+    if (status != VK_SUCCESS)
+        return status;
+
+    pProperties->resize(count);
+    status = vkEnumerateInstanceExtensionProperties(pLayerName, &count, pProperties->data());
+
+    return status;
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
-    VkPhysicalDevice                            physicalDevice,
-    std::vector<VkExtensionProperties>*         pProperties);
+inline VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceExtensionProperties(
+    std::vector<VkExtensionProperties>*         pProperties) {
+    return vuEnumerateInstanceExtensionProperties(nullptr, pProperties);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
     VkPhysicalDevice                            physicalDevice,
     const char*                                 pLayerName,
-    std::vector<VkExtensionProperties>*         pProperties);
+    std::vector<VkExtensionProperties>*         pProperties) {
+    // Initialize out paramters.
+    pProperties->clear();
+
+    // Enumerate all device extension properties.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, &count, nullptr);
+
+    if (status != VK_SUCCESS)
+        return status;
+
+    pProperties->resize(count);
+    status = vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, &count, pProperties->data());
+
+    return status;
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceLayerProperties(
-    std::vector<VkLayerProperties>*             pProperties);
+inline VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateDeviceExtensionProperties(
+    VkPhysicalDevice                            physicalDevice,
+    std::vector<VkExtensionProperties>*         pProperties) {
+    return vuEnumerateDeviceExtensionProperties(physicalDevice, nullptr, pProperties);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuEnumerateInstanceLayerProperties(
+    std::vector<VkLayerProperties>*             pProperties) {
+    // Initialize out paramters.
+    pProperties->clear();
+
+    // Enumerate all instance layer properties.
+    VkResult status;
+
+    uint32_t count;
+    status = vkEnumerateInstanceLayerProperties(&count, nullptr);
+
+    if (status != VK_SUCCESS)
+        return status;
+
+    pProperties->resize(count);
+    status = vkEnumerateInstanceLayerProperties(&count, pProperties->data());
+
+    return status;
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
     VkQueue                                     queue,
     const VkSubmitInfo*                         pSubmit,
-    VkFence                                     fence);
+    VkFence                                     fence) {
+    return vkQueueSubmit(queue, 1, pSubmit, fence);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuQueueSubmit(
     VkQueue                                     queue,
     const std::vector<VkSubmitInfo>*            pSubmits,
-    VkFence                                     fence);
+    VkFence                                     fence) {
+    return vkQueueSubmit(queue, static_cast<uint32_t>(pSubmits->size()), pSubmits->data(), fence);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuAllocateMemory(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuAllocateMemory(
     VkDevice                                    device,
     const VkMemoryAllocateInfo*                 pAllocateInfo,
-    VkDeviceMemory*                             pMemory);
+    VkDeviceMemory*                             pMemory) {
+    return vkAllocateMemory(device, pAllocateInfo, nullptr, pMemory);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuFreeMemory(
+inline VKAPI_ATTR void VKAPI_CALL vuFreeMemory(
     VkDevice                                    device,
-    VkDeviceMemory                              memory);
+    VkDeviceMemory                              memory) {
+    vkFreeMemory(device, memory, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuMapMemory(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuMapMemory(
     VkDevice                                    device,
     VkDeviceMemory                              memory,
-    void**                                      ppData);
+    void**                                      ppData) {
+    return vkMapMemory(device, memory, 0, VK_WHOLE_SIZE, 0, ppData);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuBindBufferMemory(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuBindBufferMemory(
     VkDevice                                    device,
     VkBuffer                                    buffer,
-    VkDeviceMemory                              memory);
+    VkDeviceMemory                              memory) {
+    return vkBindBufferMemory(device, buffer, memory, 0);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuBindImageMemory(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuBindImageMemory(
     VkDevice                                    device,
     VkImage                                     image,
-    VkDeviceMemory                              memory);
+    VkDeviceMemory                              memory) {
+    return vkBindImageMemory(device, image, memory, 0);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateFence(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateFence(
     VkDevice                                    device,
     const VkFenceCreateInfo*                    pCreateInfo,
-    VkFence*                                    pFence);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyFence(
-    VkDevice                                    device,
-    VkFence                                     fence);
-
-inline VKAPI_ATTR VkResult VKAPI_CALL vuResetFence(
-    VkDevice                                    device,
-    const VkFence*                              pFence) {
-    return vkResetFences(device, 1, pFence);
+    VkFence*                                    pFence) {
+    return vkCreateFence(device, pCreateInfo, nullptr, pFence);
 }
 
 //-----------------------------------------------------------------------------
 
-inline VKAPI_ATTR VkResult VKAPI_CALL vuWaitForFence(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyFence(
     VkDevice                                    device,
-    const VkFence*                              pFence,
-    uint64_t                                    timeout) {
-    return vkWaitForFences(device, 1, pFence, VK_FALSE, timeout);
+    VkFence                                     fence) {
+    vkDestroyFence(device, fence, nullptr);
 }
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateSemaphore(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateSemaphore(
     VkDevice                                    device,
     const VkSemaphoreCreateInfo*                pCreateInfo,
-    VkSemaphore*                                pSemaphore);
+    VkSemaphore*                                pSemaphore) {
+    return vkCreateSemaphore(device, pCreateInfo, nullptr, pSemaphore);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroySemaphore(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroySemaphore(
     VkDevice                                    device,
-    VkSemaphore                                 semaphore);
+    VkSemaphore                                 semaphore) {
+    vkDestroySemaphore(device, semaphore, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateEvent(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateEvent(
     VkDevice                                    device,
     const VkEventCreateInfo*                    pCreateInfo,
-    VkEvent*                                    pEvent);
+    VkEvent*                                    pEvent) {
+    return vkCreateEvent(device, pCreateInfo, nullptr, pEvent);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyEvent(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyEvent(
     VkDevice                                    device,
-    VkEvent                                     event);
+    VkEvent                                     event) {
+    return vkDestroyEvent(device, event, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateQueryPool(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateQueryPool(
     VkDevice                                    device,
     const VkQueryPoolCreateInfo*                pCreateInfo,
-    VkQueryPool*                                pQueryPool);
+    VkQueryPool*                                pQueryPool) {
+    return vkCreateQueryPool(device, pCreateInfo, nullptr, pQueryPool);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyQueryPool(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyQueryPool(
     VkDevice                                    device,
-    VkQueryPool                                 queryPool);
+    VkQueryPool                                 queryPool) {
+    vkDestroyQueryPool(device, queryPool, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateBuffer(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateBuffer(
     VkDevice                                    device,
     const VkBufferCreateInfo*                   pCreateInfo,
-    VkBuffer*                                   pBuffer);
+    VkBuffer*                                   pBuffer) {
+    return vkCreateBuffer(device, pCreateInfo, nullptr, pBuffer);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyBuffer(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyBuffer(
     VkDevice                                    device,
-    VkBuffer                                    buffer);
+    VkBuffer                                    buffer) {
+    vkDestroyBuffer(device, buffer, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateBufferView(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateBufferView(
     VkDevice                                    device,
     const VkBufferViewCreateInfo*               pCreateInfo,
-    VkBufferView*                               pView);
+    VkBufferView*                               pView) {
+    return vkCreateBufferView(device, pCreateInfo, nullptr, pView);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyBufferView(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyBufferView(
     VkDevice                                    device,
-    VkBufferView                                bufferView);
+    VkBufferView                                bufferView) {
+    vkDestroyBufferView(device, bufferView, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateImage(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateImage(
     VkDevice                                    device,
     const VkImageCreateInfo*                    pCreateInfo,
-    VkImage*                                    pImage);
+    VkImage*                                    pImage) {
+    return vkCreateImage(device, pCreateInfo, nullptr, pImage);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyImage(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyImage(
     VkDevice                                    device,
-    VkImage                                     image);
+    VkImage                                     image) {
+    vkDestroyImage(device, image, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateImageView(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateImageView(
     VkDevice                                    device,
     const VkImageViewCreateInfo*                pCreateInfo,
-    VkImageView*                                pView);
+    VkImageView*                                pView) {
+    return vkCreateImageView(device, pCreateInfo, nullptr, pView);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyImageView(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyImageView(
     VkDevice                                    device,
-    VkImageView                                 imageView);
+    VkImageView                                 imageView) {
+    vkDestroyImageView(device, imageView, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateShaderModule(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateShaderModule(
     VkDevice                                    device,
     const VkShaderModuleCreateInfo*             pCreateInfo,
-    VkShaderModule*                             pShaderModule);
+    VkShaderModule*                             pShaderModule) {
+    return vkCreateShaderModule(device, pCreateInfo, nullptr, pShaderModule);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyShaderModule(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyShaderModule(
     VkDevice                                    device,
-    VkShaderModule                              shaderModule);
+    VkShaderModule                              shaderModule) {
+    vkDestroyShaderModule(device, shaderModule, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineCache(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineCache(
     VkDevice                                    device,
     const VkPipelineCacheCreateInfo*            pCreateInfo,
-    VkPipelineCache*                            pPipelineCache);
+    VkPipelineCache*                            pPipelineCache) {
+    return vkCreatePipelineCache(device, pCreateInfo, nullptr, pPipelineCache);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineCache(
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineCache(
     VkDevice                                    device,
-    VkPipelineCache                             pipelineCache);
+    VkPipelineCache                             pipelineCache) {
+    vkDestroyPipelineCache(device, pipelineCache, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateGraphicsPipelines(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateGraphicsPipelines(
     VkDevice                                    device,
     VkPipelineCache                             pipelineCache,
     uint32_t                                    createInfoCount,
     const VkGraphicsPipelineCreateInfo*         pCreateInfos,
-    VkPipeline*                                 pPipelines);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateComputePipelines(
-    VkDevice                                    device,
-    VkPipelineCache                             pipelineCache,
-    uint32_t                                    createInfoCount,
-    const VkComputePipelineCreateInfo*          pCreateInfos,
-    VkPipeline*                                 pPipelines);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyPipeline(
-    VkDevice                                    device,
-    VkPipeline                                  pipeline);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineLayout(
-    VkDevice                                    device,
-    const VkPipelineLayoutCreateInfo*           pCreateInfo,
-    VkPipelineLayout*                           pPipelineLayout);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineLayout(
-    VkDevice                                    device,
-    VkPipelineLayout                            pipelineLayout);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateSampler(
-    VkDevice                                    device,
-    const VkSamplerCreateInfo*                  pCreateInfo,
-    VkSampler*                                  pSampler);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroySampler(
-    VkDevice                                    device,
-    VkSampler                                   sampler);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorSetLayout(
-    VkDevice                                    device,
-    const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
-    VkDescriptorSetLayout*                      pSetLayout);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorSetLayout(
-    VkDevice                                    device,
-    VkDescriptorSetLayout                       descriptorSetLayout);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorPool(
-    VkDevice                                    device,
-    const VkDescriptorPoolCreateInfo*           pCreateInfo,
-    VkDescriptorPool*                           pDescriptorPool);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorPool(
-    VkDevice                                    device,
-    VkDescriptorPool                            descriptorPool);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateFramebuffer(
-    VkDevice                                    device,
-    const VkFramebufferCreateInfo*              pCreateInfo,
-    VkFramebuffer*                              pFramebuffer);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyFramebuffer(
-    VkDevice                                    device,
-    VkFramebuffer                               framebuffer);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateRenderPass(
-    VkDevice                                    device,
-    const VkRenderPassCreateInfo*               pCreateInfo,
-    VkRenderPass*                               pRenderPass);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyRenderPass(
-    VkDevice                                    device,
-    VkRenderPass                                renderPass);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR VkResult VKAPI_CALL vuCreateCommandPool(
-    VkDevice                                    device,
-    const VkCommandPoolCreateInfo*              pCreateInfo,
-    VkCommandPool*                              pCommandPool);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuDestroyCommandPool(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffer(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool,
-    const VkCommandBuffer*                      pCommandBuffer);
-
-//-----------------------------------------------------------------------------
-
-VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffers(
-    VkDevice                                    device,
-    VkCommandPool                               commandPool,
-    const std::vector<VkCommandBuffer>*         pCommandBuffers);
-
-//-----------------------------------------------------------------------------
-
-inline VKAPI_ATTR VkResult VKAPI_CALL vuResetCommandBuffer(
-    VkCommandBuffer                             commandBuffer) {
-    vkResetCommandBuffer(commandBuffer, 0);
+    VkPipeline*                                 pPipelines) {
+    return vkCreateGraphicsPipelines(device, pipelineCache, createInfoCount, pCreateInfos, nullptr, pPipelines);
 }
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    srcBuffer,
-    VkBuffer                                    dstBuffer,
-    const VkBufferCopy*                         pRegion);
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateComputePipelines(
+    VkDevice                                    device,
+    VkPipelineCache                             pipelineCache,
+    uint32_t                                    createInfoCount,
+    const VkComputePipelineCreateInfo*          pCreateInfos,
+    VkPipeline*                                 pPipelines) {
+    return vkCreateComputePipelines(device, pipelineCache, createInfoCount, pCreateInfos, nullptr, pPipelines);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
-    VkCommandBuffer                             commandBuffer,
-    VkBuffer                                    srcBuffer,
-    VkBuffer                                    dstBuffer,
-    const std::vector<VkBufferCopy>*            pRegions);
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyPipeline(
+    VkDevice                                    device,
+    VkPipeline                                  pipeline) {
+    vkDestroyPipeline(device, pipeline, nullptr);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreatePipelineLayout(
+    VkDevice                                    device,
+    const VkPipelineLayoutCreateInfo*           pCreateInfo,
+    VkPipelineLayout*                           pPipelineLayout) {
+    return vkCreatePipelineLayout(device, pCreateInfo, nullptr, pPipelineLayout);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyPipelineLayout(
+    VkDevice                                    device,
+    VkPipelineLayout                            pipelineLayout) {
+    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateSampler(
+    VkDevice                                    device,
+    const VkSamplerCreateInfo*                  pCreateInfo,
+    VkSampler*                                  pSampler) {
+    return vkCreateSampler(device, pCreateInfo, nullptr, pSampler);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroySampler(
+    VkDevice                                    device,
+    VkSampler                                   sampler) {
+    vkDestroySampler(device, sampler, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorSetLayout(
+    VkDevice                                    device,
+    const VkDescriptorSetLayoutCreateInfo*      pCreateInfo,
+    VkDescriptorSetLayout*                      pSetLayout) {
+    return vkCreateDescriptorSetLayout(device, pCreateInfo, nullptr, pSetLayout);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorSetLayout(
+    VkDevice                                    device,
+    VkDescriptorSetLayout                       descriptorSetLayout) {
+    vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateDescriptorPool(
+    VkDevice                                    device,
+    const VkDescriptorPoolCreateInfo*           pCreateInfo,
+    VkDescriptorPool*                           pDescriptorPool) {
+    return vkCreateDescriptorPool(device, pCreateInfo, nullptr, pDescriptorPool);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyDescriptorPool(
+    VkDevice                                    device,
+    VkDescriptorPool                            descriptorPool) {
+    vkDestroyDescriptorPool(device, descriptorPool, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateFramebuffer(
+    VkDevice                                    device,
+    const VkFramebufferCreateInfo*              pCreateInfo,
+    VkFramebuffer*                              pFramebuffer) {
+    return vkCreateFramebuffer(device, pCreateInfo, nullptr, pFramebuffer);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyFramebuffer(
+    VkDevice                                    device,
+    VkFramebuffer                               framebuffer) {
+    vkDestroyFramebuffer(device, framebuffer, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateRenderPass(
+    VkDevice                                    device,
+    const VkRenderPassCreateInfo*               pCreateInfo,
+    VkRenderPass*                               pRenderPass) {
+    return vkCreateRenderPass(device, pCreateInfo, nullptr, pRenderPass);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyRenderPass(
+    VkDevice                                    device,
+    VkRenderPass                                renderPass) {
+    vkDestroyRenderPass(device, renderPass, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR VkResult VKAPI_CALL vuCreateCommandPool(
+    VkDevice                                    device,
+    const VkCommandPoolCreateInfo*              pCreateInfo,
+    VkCommandPool*                              pCommandPool) {
+    return vkCreateCommandPool(device, pCreateInfo, nullptr, pCommandPool);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuDestroyCommandPool(
+    VkDevice                                    device,
+    VkCommandPool                               commandPool) {
+    vkDestroyCommandPool(device, commandPool, nullptr);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffer(
+    VkDevice                                    device,
+    VkCommandPool                               commandPool,
+    const VkCommandBuffer*                      pCommandBuffer) {
+    vkFreeCommandBuffers(device, commandPool, 1, pCommandBuffer);
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuFreeCommandBuffers(
+    VkDevice                                    device,
+    VkCommandPool                               commandPool,
+    const std::vector<VkCommandBuffer>*         pCommandBuffers) {
+    vkFreeCommandBuffers(device, commandPool, static_cast<uint32_t>(pCommandBuffers->size()), pCommandBuffers->data());
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkBuffer                                    dstBuffer,
+    const VkBufferCopy*                         pRegion) {
+    vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, pRegion);
+}
+
+//-----------------------------------------------------------------------------
+
+inline inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyBuffer(
+    VkCommandBuffer                             commandBuffer,
+    VkBuffer                                    srcBuffer,
+    VkBuffer                                    dstBuffer,
+    const std::vector<VkBufferCopy>*            pRegions) {
+    vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
+
+//-----------------------------------------------------------------------------
+
+inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
     VkCommandBuffer                             commandBuffer,
     VkImage                                     srcImage,
     VkImageLayout                               srcImageLayout,
     VkImage                                     dstImage,
     VkImageLayout                               dstImageLayout,
-    const VkImageCopy*                          pRegion);
+    const VkImageCopy*                          pRegion) {
+    vkCmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, 1, pRegion);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyImage(
     VkCommandBuffer                             commandBuffer,
     VkImage                                     srcImage,
     VkImageLayout                               srcImageLayout,
     VkImage                                     dstImage,
     VkImageLayout                               dstImageLayout,
-    const std::vector<VkImageCopy>*             pRegions);
+    const std::vector<VkImageCopy>*             pRegions) {
+    vkCmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
     VkCommandBuffer                             commandBuffer,
     VkImage                                     srcImage,
     VkImageLayout                               srcImageLayout,
     VkImage                                     dstImage,
     VkImageLayout                               dstImageLayout,
     const VkImageBlit*                          pRegion,
-    VkFilter                                    filter);
+    VkFilter                                    filter) {
+    vkCmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, 1, pRegion, filter);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdBlitImage(
     VkCommandBuffer                             commandBuffer,
     VkImage                                     srcImage,
     VkImageLayout                               srcImageLayout,
     VkImage                                     dstImage,
     VkImageLayout                               dstImageLayout,
     const std::vector<VkImageBlit>*             pRegions,
-    VkFilter                                    filter);
+    VkFilter                                    filter) {
+    vkCmdBlitImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, static_cast<uint32_t>(pRegions->size()), pRegions->data(), filter);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
     VkCommandBuffer                             commandBuffer,
     VkBuffer                                    srcBuffer,
     VkImage                                     dstImage,
     VkImageLayout                               dstImageLayout,
-    const VkBufferImageCopy*                    pRegion);
+    const VkBufferImageCopy*                    pRegion) {
+    vkCmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, 1, pRegion);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyBufferToImage(
     VkCommandBuffer                             commandBuffer,
     VkBuffer                                    srcBuffer,
     VkImage                                     dstImage,
     VkImageLayout                               dstImageLayout,
-    const std::vector<VkBufferImageCopy>*       pRegions);
+    const std::vector<VkBufferImageCopy>*       pRegions) {
+    vkCmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
     VkCommandBuffer                             commandBuffer,
     VkImage                                     srcImage,
     VkImageLayout                               srcImageLayout,
     VkBuffer                                    dstBuffer,
-    const VkBufferImageCopy*                    pRegion);
+    const VkBufferImageCopy*                    pRegion) {
+    vkCmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, 1, pRegion);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdCopyImageToBuffer(
     VkCommandBuffer                             commandBuffer,
     VkImage                                     srcImage,
     VkImageLayout                               srcImageLayout,
     VkBuffer                                    dstBuffer,
-    const std::vector<VkBufferImageCopy>*       pRegions);
+    const std::vector<VkBufferImageCopy>*       pRegions) {
+    vkCmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, static_cast<uint32_t>(pRegions->size()), pRegions->data());
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
     VkCommandBuffer                             commandBuffer,
     VkPipelineStageFlags                        srcStageMask,
     VkPipelineStageFlags                        dstStageMask,
     VkDependencyFlags                           dependencyFlags,
-    const VkImageMemoryBarrier*                 pImageMemoryBarrier);
+    const VkImageMemoryBarrier*                 pImageMemoryBarrier) {
+    vkCmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, 1, pImageMemoryBarrier);
+}
 
 //-----------------------------------------------------------------------------
 
-VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
+inline VKAPI_ATTR void VKAPI_CALL vuCmdPipelineBarrier(
     VkCommandBuffer                             commandBuffer,
     VkPipelineStageFlags                        srcStageMask,
     VkPipelineStageFlags                        dstStageMask,
     VkDependencyFlags                           dependencyFlags,
-    const std::vector<VkImageMemoryBarrier>*    pImageMemoryBarriers);
+    const std::vector<VkImageMemoryBarrier>*    pImageMemoryBarriers) {
+    vkCmdPipelineBarrier(commandBuffer, srcStageMask, dstStageMask, dependencyFlags, 0, nullptr, 0, nullptr, static_cast<uint32_t>(pImageMemoryBarriers->size()), pImageMemoryBarriers->data());
+}
 
 //-----------------------------------------------------------------------------
 
